@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" tiledversion="1.0.2" orientation="orthogonal" renderorder="right-down" width="44" height="20" tilewidth="100" tileheight="100" nextobjectid="9">
+ <tileset firstgid="1" name="lines/spaces" tilewidth="100" tileheight="100" tilecount="8" columns="0">
+  <tile id="0">
+   <image width="100" height="100" source="../sprites/line +.png"/>
+  </tile>
+  <tile id="1">
+   <image width="100" height="100" source="../sprites/line end.png"/>
+  </tile>
+  <tile id="2">
+   <image width="100" height="100" source="../sprites/line hor.png"/>
+  </tile>
+  <tile id="3">
+   <image width="100" height="100" source="../sprites/line L.png"/>
+  </tile>
+  <tile id="4">
+   <image width="100" height="100" source="../sprites/line T.png"/>
+  </tile>
+  <tile id="5">
+   <image width="100" height="100" source="../sprites/map start.png"/>
+  </tile>
+  <tile id="6">
+   <image width="100" height="100" source="../sprites/space_goal.png"/>
+  </tile>
+  <tile id="7">
+   <image width="100" height="100" source="../sprites/space_start.png"/>
+  </tile>
+ </tileset>
+ <tileset firstgid="9" name="bkgd" tilewidth="100" tileheight="100" tilecount="1" columns="0">
+  <tile id="0">
+   <image width="100" height="100" source="../sprites/map bkgd.png"/>
+  </tile>
+ </tileset>
+ <tileset firstgid="10" name="trees" tilewidth="296" tileheight="329" tilecount="3" columns="0">
+  <tile id="0">
+   <image width="177" height="200" source="../sprites/map oak 1.png"/>
+  </tile>
+  <tile id="1">
+   <image width="296" height="329" source="../sprites/map oak 2.png"/>
+  </tile>
+  <tile id="2">
+   <image width="100" height="100" source="../sprites/map oak 3.png"/>
+  </tile>
+ </tileset>
+ <tileset firstgid="13" name="bldgs" tilewidth="500" tileheight="300" tilecount="8" columns="0">
+  <tile id="0">
+   <image width="100" height="100" source="../sprites/house1.png"/>
+  </tile>
+  <tile id="1">
+   <image width="100" height="100" source="../sprites/house2.png"/>
+  </tile>
+  <tile id="2">
+   <image width="100" height="100" source="../sprites/house3.png"/>
+  </tile>
+  <tile id="4">
+   <image width="200" height="200" source="../sprites/factory bldg.png"/>
+  </tile>
+  <tile id="6">
+   <image width="300" height="300" source="../sprites/factory stuff.png"/>
+  </tile>
+  <tile id="8">
+   <image width="300" height="200" source="../sprites/heritage.png"/>
+  </tile>
+  <tile id="9">
+   <image width="200" height="200" source="../sprites/gas station.png"/>
+  </tile>
+  <tile id="10">
+   <image width="500" height="300" source="../sprites/sutton traffic lights.png"/>
+  </tile>
+ </tileset>
+ <tileset firstgid="24" name="dirt layer" tilewidth="4400" tileheight="2000" tilecount="1" columns="0">
+  <tile id="1">
+   <image width="4400" height="2000" source="../sprites/map sutton dirt layer.png"/>
+  </tile>
+ </tileset>
+ <tileset firstgid="26" name="road layer" tilewidth="4400" tileheight="2000" tilecount="1" columns="0">
+  <tile id="6">
+   <image width="4400" height="2000" source="../sprites/map sutton road layer.png"/>
+  </tile>
+ </tileset>
+ <tileset firstgid="33" name="fences" tilewidth="100" tileheight="200" tilecount="2" columns="0">
+  <tile id="0">
+   <image width="100" height="100" source="../sprites/fence_hor.png"/>
+  </tile>
+  <tile id="1">
+   <image width="100" height="200" source="../sprites/fence_ver.png"/>
+  </tile>
+ </tileset>
+ <tileset firstgid="35" name="grass layer" tilewidth="4400" tileheight="2000" tilecount="1" columns="0">
+  <tile id="0">
+   <image width="4400" height="2000" source="../sprites/map sutton grass layer.png"/>
+  </tile>
+ </tileset>
+ <imagelayer name="Image Layer 1">
+  <image source="../sprites/sutton.png" width="4400" height="2000"/>
+ </imagelayer>
+ <layer name="lines/spaces" width="44" height="20">
+  <properties>
+   <property name="type" type="int" value="2"/>
+  </properties>
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1610612740,3221225475,3221225475,3221225475,6,3,3,3,3,6,3,3,6,0,0,0,0,0,1610612738,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2684354563,0,0,0,0,0,0,0,0,0,0,0,3221225476,3,3,6,3,3,2684354565,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,1610612740,3,6,3,3,4,0,2684354563,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2684354563,0,0,3221225476,3,6,3,3,4,0,0,0,0,0,
+0,0,0,0,0,0,0,0,1610612739,0,0,0,0,3221225476,3,6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2684354563,0,0,0,0,0,0,0,3221225476,4,0,0,0,0,
+0,0,0,0,0,0,0,0,1610612739,0,0,0,0,0,0,2684354563,0,0,0,0,0,0,0,0,0,0,0,0,1610612740,3221225475,2684354565,0,0,0,0,0,0,0,0,1610612739,0,0,7,0,
+0,0,0,0,0,6,3,5,3221225477,3,4,0,0,0,0,2684354563,0,0,0,0,0,0,0,0,1610612740,6,3,3,2684354565,0,6,0,0,0,0,0,0,1610612740,3221225475,1073741829,3,3,1073741828,0,
+0,0,0,0,0,2684354563,1610612740,2684354564,0,0,3221225476,3,6,3,3,3221225477,3221225475,3221225475,3221225475,3221225475,3221225475,3,3,3,2684354564,0,0,0,3221225476,3,3221225477,3,6,3,3,3,3,2684354564,0,0,0,0,0,0,
+0,0,0,0,0,6,2684354563,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,3221225476,3221225477,6,3,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,3221225476,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,1610612740,6,2684354564,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,8,3,3,3,3,2684354564,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <objectgroup name="car path test" visible="0">
+  <object id="8" x="42.4242" y="-42.4242">
+   <polyline points="0,0 266.667,121.212 342.424,142.424 424.242,175.758 560.606,224.242 703.03,281.818 827.273,327.273 969.697,384.848 1103.03,427.273 1242.42,469.697 1400,503.03 1478.79,515.152 1487.88,548.485 1484.85,766.667 1478.79,775.758 1463.64,778.788 1387.88,751.515 1306.06,687.879 1263.64,678.788 815.152,681.818 796.97,700 793.939,736.364 793.939,966.667 803.03,996.97 869.697,1003.03 942.424,1009.09 984.848,1030.3 1024.24,1060.61 1075.76,1072.73 1142.42,1087.88 1224.24,1096.97 1882.3,1100.24 2319.27,1079.03 2441.58,1065.21 2575.15,1019.39 2663.15,1006.06 2794.42,1007.88 2793.09,1058.31 2797.82,1077.82 2818.43,1085.82 2980.24,1080.49 2999.03,1092 3009.45,1217.82 3012.6,1418.42 3018.66,1450.18 3038.91,1542.18 3075.64,1652.61 3102.18,1784.24 3122.06,1912.12 3140.85,2010.79 3167.76,2117.21"/>
+  </object>
+ </objectgroup>
+</map>

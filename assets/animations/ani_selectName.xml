@@ -1,0 +1,6 @@
+<animation name="selectName" speed="0.325">
+	<frame src="splat1.png"/>
+	<frame src="splat2.png"/>
+	<frame src="splat3.png"/>
+	<frame src="splat4.png"/>
+</animation>

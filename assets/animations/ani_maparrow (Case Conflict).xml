@@ -1,0 +1,17 @@
+<animation name="maparrow" speed="1.0">
+	<frame src="maparrow_1.png"/>
+	<frame src="maparrow_3.png"/>
+	<frame src="maparrow_5.png"/>
+	<frame src="maparrow_7.png"/>
+	<frame src="maparrow_9.png"/>
+	<frame src="maparrow_11.png"/>
+	<frame src="maparrow_10.png"/>
+	<frame src="maparrow_9.png"/>
+	<frame src="maparrow_8.png"/>
+	<frame src="maparrow_7.png"/>
+	<frame src="maparrow_6.png"/>
+	<frame src="maparrow_5.png"/>
+	<frame src="maparrow_4.png"/>
+	<frame src="maparrow_3.png"/>
+	<frame src="maparrow_2.png"/>
+</animation>

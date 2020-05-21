@@ -1,0 +1,5 @@
+*/build
+*.a
+Crash2D_Test
+Crash2D_Demo
+.codelite/

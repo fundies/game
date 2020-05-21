@@ -1,0 +1,33 @@
+dist: trusty
+
+language:
+  - cpp
+  
+compiler:
+  - gcc
+  
+addons:
+  apt:
+    sources:
+    - ubuntu-toolchain-r-test
+    packages:
+    - gcc-4.9
+    - g++-4.9
+    - libsfml-dev
+
+install:
+  - sudo pip install cpp-coveralls
+  - export CXX="g++-4.9" CC="gcc-4.9"
+  - git clone https://github.com/google/googletest.git
+  - mkdir gtest
+  - cd gtest
+  - cmake -DCMAKE_INSTALL_PREFIX=/usr ../googletest/
+  - sudo make install
+  - cd ..
+
+script:
+  - make
+  - ./Crash2D_Test
+
+after_success:
+- coveralls --root library/
