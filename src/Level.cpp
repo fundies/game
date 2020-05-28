@@ -7,14 +7,14 @@
 #include <exception>
 
 class TmxException : public std::exception {
-  virtual const char_t* what() const throw() { return "Error reading map"; }
+  virtual const char* what() const throw() { return "Error reading map"; }
 } tmxException;
 
-int_t Level::gidClearFlags(uint_t gid) { return gid & TMX_FLIP_BITS_REMOVAL; }
+int Level::gidClearFlags(unsigned gid) { return gid & TMX_FLIP_BITS_REMOVAL; }
 
-uint_t Level::gidExtractFlags(uint_t gid) { return gid & ~TMX_FLIP_BITS_REMOVAL; }
+unsigned Level::gidExtractFlags(unsigned gid) { return gid & ~TMX_FLIP_BITS_REMOVAL; }
 
-void Level::LoadTMX(const char_t* fileName) {
+void Level::LoadTMX(const char* fileName) {
   tmx_map* map = nullptr;
 
   try {
@@ -33,31 +33,31 @@ void Level::LoadTMX(const char_t* fileName) {
 }
 
 void Level::ParseTMX(tmx_map* map) {
-  string_t name;
+  std::string name;
 
   _size.x = map->tile_width * map->width;
   _size.y = map->tile_height * map->height;
 
   for (tmx_layer* layer = map->ly_head; layer != nullptr; layer = layer->next) {
     if (layer->type == L_IMAGE) {
-      string_t tileName = remove_extension(base_name(string_t(layer->content.image->source)));
+      std::string tileName = remove_extension(base_name(std::string(layer->content.image->source)));
       Sprite spr = ResourceManager::GetSprite(tileName);
 
       _tiles.push_back(spr);
 
     } else if (layer->visible && layer->type == L_LAYER) {
-      uint_t layerType = 0;
+      unsigned layerType = 0;
 
       if (layer->properties != nullptr) layerType = (tmx_get_property(layer->properties, "type"))->value.integer;
 
-      for (uint_t i = 0; i < map->height; i++) {
-        for (uint_t j = 0; j < map->width; j++) {
-          uint_t tileID_l = layer->content.gids[(i * map->width) + j];
-          uint_t tileID_s = gidClearFlags(tileID_l);
+      for (unsigned i = 0; i < map->height; i++) {
+        for (unsigned j = 0; j < map->width; j++) {
+          unsigned tileID_l = layer->content.gids[(i * map->width) + j];
+          unsigned tileID_s = gidClearFlags(tileID_l);
 
           if (map->tiles[tileID_s] != nullptr) {
-            string_t tileName = remove_extension(base_name(string_t(map->tiles[tileID_s]->image->source)));
-            uint_t tileFlags = gidExtractFlags(tileID_l);
+            std::string tileName = remove_extension(base_name(std::string(map->tiles[tileID_s]->image->source)));
+            unsigned tileFlags = gidExtractFlags(tileID_l);
 
             switch (layerType) {
               case 0: {
@@ -67,13 +67,13 @@ void Level::ParseTMX(tmx_map* map) {
               case 2: {
                 SpaceDir thisSpace = GetSpaceProps(tileName, tileFlags);
 
-                ENGINE::Vector2<int_t> currPos(j * map->tile_width, (i + 1) * map->tile_height - 100);
+                Vec2i currPos(j * map->tile_width, (i + 1) * map->tile_height - 100);
                 mapPathPtr curr = findSpace(currPos);
 
                 if (curr == nullptr) {
                   if (thisSpace.start) _boardStartIndex = spaces.size();
 
-                  curr = mapPathPtr(new MapPath(ENGINE::Vector2<int_t>(j * map->tile_width, i * map->tile_height)));
+                  curr = mapPathPtr(new MapPath(Vec2i(j * map->tile_width, i * map->tile_height)));
                   spaces.push_back(curr);
                 }
 
@@ -90,7 +90,7 @@ void Level::ParseTMX(tmx_map* map) {
                   SpaceDir otherSpace = GetSpaceProps(otherName, otherFlags);
 
                   if (thisSpace.left && otherSpace.right) {
-                    ENGINE::Vector2<int_t> pos = currPos + ENGINE::Vector2<int_t>(-100, 0);
+                    Vec2i pos = currPos + Vec2i(-100, 0);
 
                     mapPathPtr left = findSpace(pos);
 
@@ -113,7 +113,7 @@ void Level::ParseTMX(tmx_map* map) {
                   SpaceDir otherSpace = GetSpaceProps(otherName, otherFlags);
 
                   if (thisSpace.right && otherSpace.left) {
-                    ENGINE::Vector2<int_t> pos = currPos + ENGINE::Vector2<int_t>(100, 0);
+                    Vec2i pos = currPos + Vec2i(100, 0);
 
                     mapPathPtr right = findSpace(pos);
 
@@ -136,7 +136,7 @@ void Level::ParseTMX(tmx_map* map) {
                   SpaceDir otherSpace = GetSpaceProps(otherName, otherFlags);
 
                   if (thisSpace.up && otherSpace.down) {
-                    ENGINE::Vector2<int_t> pos = currPos + ENGINE::Vector2<int_t>(0, -100);
+                    Vec2i pos = currPos + Vec2i(0, -100);
 
                     mapPathPtr up = findSpace(pos);
 
@@ -159,7 +159,7 @@ void Level::ParseTMX(tmx_map* map) {
                   SpaceDir otherSpace = GetSpaceProps(otherName, otherFlags);
 
                   if (thisSpace.down && otherSpace.up) {
-                    ENGINE::Vector2<int_t> pos = currPos + ENGINE::Vector2<int_t>(0, 100);
+                    Vec2i pos = currPos + Vec2i(0, 100);
 
                     mapPathPtr down = findSpace(pos);
 
@@ -185,7 +185,7 @@ void Level::ParseTMX(tmx_map* map) {
 
                 Sprite spr = ResourceManager::GetSprite(tileName);
 
-                spr.SetTranslation(ENGINE::Vector2<float_type>(j * map->tile_width,
+                spr.SetTranslation(Vec2f(j * map->tile_width,
                                                                (i + 1) * map->tile_height - spr.GetTextureSize().y));
 
                 doFlips(tileFlips, &spr.GetPointM(0).GetTexturePositionM(), &spr.GetPointM(1).GetTexturePositionM(),
@@ -198,7 +198,7 @@ void Level::ParseTMX(tmx_map* map) {
 
               //Object
               case 3: {
-                Transformation<float_type> t;
+                Transformation<float> t;
 
                 std::bitset<3> bits;
                 bits.set(0, tileFlags & TMX_FLIPPED_VERTICALLY);
@@ -219,17 +219,17 @@ void Level::ParseTMX(tmx_map* map) {
                   //return;
                 } else if (bits.test(0) && !bits.test(1) && !bits.test(2)) {
                   //001
-                  t.SetScale(ENGINE::Vector2<float_type>(1, -1));
+                  t.SetScale(Vec2f(1, -1));
                 } else if (!bits.test(0) && bits.test(1) && !bits.test(2)) {
                   //010
-                  t.SetScale(ENGINE::Vector2<float_type>(-1, 1));
+                  t.SetScale(Vec2f(-1, 1));
                 } else if (bits.test(0) && bits.test(1) && !bits.test(2)) {
                   //011
                   t.SetRotation(180);
                 } else if (!bits.test(0) && !bits.test(1) && bits.test(2)) {
                   //100
                   t.SetRotation(90);
-                  t.SetScale(ENGINE::Vector2<float_type>(-1, 1));
+                  t.SetScale(Vec2f(-1, 1));
                 } else if (bits.test(0) && !bits.test(1) && bits.test(2)) {
                   //101
                   t.SetRotation(270);
@@ -239,12 +239,12 @@ void Level::ParseTMX(tmx_map* map) {
                 } else if (bits.test(0) && bits.test(1) && bits.test(2)) {
                   //111
                   t.SetRotation(90);
-                  t.SetScale(ENGINE::Vector2<float_type>(1, -1));
+                  t.SetScale(Vec2f(1, -1));
                 }
 
                 Sprite spr = ResourceManager::GetSprite(tileName);
-                t.SetTranslation(ENGINE::Vector2<float_type>(j * map->tile_width,
-                                                             (i + 1) * map->tile_height - spr.GetTextureSize().y));
+                t.SetTranslation(Vec2f(j * (map->tile_width),
+                                                             (i + 1) * (map->tile_height) - spr.GetTextureSize().y));
                 t.SetPivot(spr.GetCenter());
 
                 AddInstance(tileName, t);
@@ -259,8 +259,8 @@ void Level::ParseTMX(tmx_map* map) {
   }
 }
 
-void Level::doFlips(std::bitset<3> bits, ENGINE::Vector2<float_type>* v0, ENGINE::Vector2<float_type>* v1,
-                    ENGINE::Vector2<float_type>* v2, ENGINE::Vector2<float_type>* v3) {
+void Level::doFlips(std::bitset<3> bits, Vec2f* v0, Vec2f* v1,
+                    Vec2f* v2, Vec2f* v3) {
   //000 = no change
   //001 = vertical = swap y axis
   //010 = horizontal = swap x axis
@@ -304,51 +304,43 @@ void Level::doFlips(std::bitset<3> bits, ENGINE::Vector2<float_type>* v0, ENGINE
   }
 }
 
-void Level::flipY(ENGINE::Vector2<float_type>* v0, ENGINE::Vector2<float_type>* v1, ENGINE::Vector2<float_type>* v2,
-                  ENGINE::Vector2<float_type>* v3) {
+void Level::flipY(Vec2f* v0, Vec2f* v1, Vec2f* v2,
+                  Vec2f* v3) {
   //Flip Y
-  ENGINE::Vector2<float_type> tmp = *v0;
+  Vec2f tmp = *v0;
   v0->y = v2->y;
   v1->y = v2->y;
   v2->y = tmp.y;
   v3->y = v2->y;
 }
 
-void Level::flipX(ENGINE::Vector2<float_type>* v0, ENGINE::Vector2<float_type>* v1, ENGINE::Vector2<float_type>* v2,
-                  ENGINE::Vector2<float_type>* v3) {
+void Level::flipX(Vec2f* v0, Vec2f* v1, Vec2f* v2,
+                  Vec2f* v3) {
   //Flip X
-  ENGINE::Vector2<float_type> tmp = *v0;
+  Vec2f tmp = *v0;
   v0->x = v1->x;
   v1->x = tmp.x;
   v2->x = v3->x;
   v3->x = v0->x;
 }
 
-void Level::flipD(ENGINE::Vector2<float_type>* v0, ENGINE::Vector2<float_type>* v1, ENGINE::Vector2<float_type>* v2,
-                  ENGINE::Vector2<float_type>* v3) {
+void Level::flipD(Vec2f* v0, Vec2f* v1, Vec2f* v2,
+                  Vec2f* v3) {
   //Diagonal flip
-  ENGINE::Vector2<float_type> tmp = *v1;
+  Vec2f tmp = *v1;
   v1->x = v3->x;
   v1->y = v3->y;
   v3->x = tmp.x;
   v3->y = tmp.y;
 }
 
-void Level::SetGUIview(const View& _GUIview) { this->_GUIview = _GUIview; }
+void Level::SetSize(const Vec2u& _size) { this->_size = _size; }
 
-void Level::SetSize(const ENGINE::Vector2<uint_t>& _size) { this->_size = _size; }
+void Level::SetTiles(const std::vector<Sprite>& _tiles) { this->_tiles = _tiles; }
 
-void Level::SetTiles(const vector_t<Sprite>& _tiles) { this->_tiles = _tiles; }
+const Vec2u& Level::GetSize() const { return _size; }
 
-void Level::SetView(const View& _view) { this->_view = _view; }
-
-View& Level::GetGUIview() { return _GUIview; }
-
-const ENGINE::Vector2<uint_t>& Level::GetSize() const { return _size; }
-
-const vector_t<Sprite>& Level::GetTiles() const { return _tiles; }
-
-View& Level::GetView() { return _view; }
+const std::vector<Sprite>& Level::GetTiles() const { return _tiles; }
 
 SpaceDir Level::GetSpaceProps(std::string spaceType, unsigned flags) {
   bool canLeft = false;
@@ -563,7 +555,7 @@ SpaceDir Level::GetSpaceProps(std::string spaceType, unsigned flags) {
   return SpaceDir(canLeft, canRight, canUp, canDown, start);
 }
 
-mapPathPtr Level::findSpace(ENGINE::Vector2<int_t> space) {
+mapPathPtr Level::findSpace(Vec2i space) {
   auto it = std::find_if(std::begin(spaces), std::end(spaces),
                          [&space](mapPathPtr path) { return (path->position == space); });
 
@@ -573,13 +565,13 @@ mapPathPtr Level::findSpace(ENGINE::Vector2<int_t> space) {
     return nullptr;
 }
 
-MapPath* Level::GetBoardSpace(uint_t index) { return spaces[index].get(); }
+MapPath* Level::GetBoardSpace(unsigned index) { return spaces[index].get(); }
 
 MapPath* Level::GetBoardStartSpace() { return GetBoardSpace(_boardStartIndex); }
 
-const vector_t<Instance>& Level::GetInstances() const { return _instances; }
+const std::vector<Instance>& Level::GetInstances() const { return _instances; }
 
-const vector_t<Instance>& Level::GetInstancesFollowing() const { return _instancesFollowing; }
+const std::vector<Instance>& Level::GetInstancesFollowing() const { return _instancesFollowing; }
 
 #include "ObjectBlock.hpp"
 #include "ObjectBlockHalf.hpp"
@@ -590,7 +582,7 @@ const vector_t<Instance>& Level::GetInstancesFollowing() const { return _instanc
 #include "ObjectHill3.hpp"
 #include "ObjectPlayer.hpp"
 #include "ObjectPlayerSelect.hpp"
-Instance Level::AddInstance(string_t name, Transformation<float_type> t) {
+Instance Level::AddInstance(std::string name, Transformation<float> t) {
   Instance inst = nullptr;
 
   if (name == "HUD")

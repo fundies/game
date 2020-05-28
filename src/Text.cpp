@@ -2,7 +2,7 @@
 
 Text::Text() {}
 
-Text::Text(string_t font, string_t string) : _font(font) { SetString(string); }
+Text::Text(std::string font, std::string string) : _font(font) { SetString(string); }
 
 void Text::SetColor(const Color& _color) {
   this->_color = _color;
@@ -11,14 +11,14 @@ void Text::SetColor(const Color& _color) {
     c.SetColor(_color);
   }
 }
-void Text::SetFont(const string_t& _font) { this->_font = _font; }
+void Text::SetFont(const std::string& _font) { this->_font = _font; }
 
-void Text::SetString(const string_t& _string) {
+void Text::SetString(const std::string& _string) {
   this->_string = _string;
 
   _letters.clear();
 
-  ENGINE::Vector2<float_type> pos(0, 0);
+  Vec2f pos(0, 0);
 
   for (auto& c : _string) {
     int l = static_cast<int>(c);
@@ -26,18 +26,18 @@ void Text::SetString(const string_t& _string) {
     letter.SetTranslation(pos);
     _letters.push_back(letter);
 
-    pos += ENGINE::Vector2<float_type>(letter.GetTextureSize().x, 0);
+    pos += Vec2f(letter.GetTextureSize().x, 0);
   }
 
-  _textureSize = ENGINE::Vector2<float_type>(pos.x, _letters[0].GetTextureSize().y);
+  _textureSize = Vec2f(pos.x, _letters[0].GetTextureSize().y);
 }
 
-void Text::SetScale(const ENGINE::Vector2<float_type>& scale) {
-  ENGINE::Vector2<float_type> pos(0, 0);
+void Text::SetScale(const Vec2f& scale) {
+  Vec2f pos(0, 0);
 
   for (auto& c : _letters) {
     c.SetTranslation(pos);
-    pos += ENGINE::Vector2<float_type>(c.GetTextureSize().x * scale.x, 0);
+    pos += Vec2f(c.GetTextureSize().x * scale.x, 0);
   }
 
   Transformable::SetScale(scale);
@@ -45,20 +45,20 @@ void Text::SetScale(const ENGINE::Vector2<float_type>& scale) {
 
 const Color& Text::GetColor() const { return _color; }
 
-const string_t& Text::GetFont() const { return _font; }
+const std::string& Text::GetFont() const { return _font; }
 
-const string_t& Text::GetString() const { return _string; }
+const std::string& Text::GetString() const { return _string; }
 
-const ENGINE::Vector2<float_type>& Text::GetTextureSize() const { return _textureSize; }
+const Vec2f& Text::GetTextureSize() const { return _textureSize; }
 
-const vector_t<Sprite>& Text::GetLetters() const { return _letters; }
+const std::vector<Sprite>& Text::GetLetters() const { return _letters; }
 
 void Text::SetShadowColor(const Color& _shadowColor) { this->_shadowColor = _shadowColor; }
 
-void Text::SetShadowPosition(const ENGINE::Vector2<float_type>& _shadowPosition) {
+void Text::SetShadowPosition(const Vec2f& _shadowPosition) {
   this->_shadowPosition = _shadowPosition;
 }
 
 const Color& Text::GetShadowColor() const { return _shadowColor; }
 
-const ENGINE::Vector2<float_type>& Text::GetShadowPosition() const { return _shadowPosition; }
+const Vec2f& Text::GetShadowPosition() const { return _shadowPosition; }

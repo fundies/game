@@ -7,7 +7,7 @@
 
 #include <stack>
 
-enum class MapDirection : uint_t { left, right, up, down };
+enum class MapDirection : unsigned { left, right, up, down };
 
 class PlayerInfo {
  public:
@@ -20,12 +20,12 @@ class PlayerInfo {
   const std::string& GetName() const;
   void SetMapIcon(const Sprite& _mapIcon);
   Sprite& GetMapIcon();
-  bool_t SetMapPosition(MapPath* _mapPosition);
+  bool SetMapPosition(MapPath* _mapPosition);
   const MapPath* GetMapPosition() const;
-  const ENGINE::Vector2<int_t>& GetBoardPosition() const;
+  const Vec2i& GetBoardPosition() const;
   void MoveSpace(MapDirection direction);
-  void SetNumberOfMoves(const uint_t& _numberOfMoves);
-  const uint_t& GetNumberOfMoves() const;
+  void SetNumberOfMoves(const unsigned& _numberOfMoves);
+  const unsigned& GetNumberOfMoves() const;
   void UndoMoves();
 
  protected:
@@ -34,7 +34,7 @@ class PlayerInfo {
   Sprite _hudIcon;
   Sprite _mapIcon;
   MapPath* _mapPosition;
-  uint_t _numberOfMoves;
+  unsigned _numberOfMoves;
   std::stack<MapDirection> _previousMoves;
 };
 

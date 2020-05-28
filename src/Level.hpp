@@ -5,7 +5,6 @@
 #include "MapPath.hpp"
 #include "Object.hpp"
 #include "Sprite.hpp"
-#include "View.hpp"
 
 #include <tmx.h>
 #include <bitset>
@@ -27,50 +26,44 @@ class Level {
  public:
   Level() : _cameraMode(CAMERAMODE::CAMERA_SINGLE) {}
   Level(CAMERAMODE mode) : _cameraMode(mode) {}
-  void LoadTMX(const char_t *fileName);
+  void LoadTMX(const char *fileName);
   void ParseTMX(tmx_map *map);
 
-  void SetGUIview(const View &_GUIview);
-  void SetSize(const ENGINE::Vector2<uint_t> &_size);
-  void SetTiles(const vector_t<Sprite> &_tiles);
-  void SetView(const View &_view);
-  View &GetGUIview();
-  const ENGINE::Vector2<uint_t> &GetSize() const;
-  const vector_t<Sprite> &GetTiles() const;
-  View &GetView();
-  MapPath *GetBoardSpace(uint_t index);
+  void SetSize(const Vec2u &_size);
+  void SetTiles(const std::vector<Sprite> &_tiles);
+  const Vec2u &GetSize() const;
+  const std::vector<Sprite> &GetTiles() const;
+  MapPath *GetBoardSpace(unsigned index);
   MapPath *GetBoardStartSpace();
-  const vector_t<Instance> &GetInstances() const;
-  const vector_t<Instance> &GetInstancesFollowing() const;
-  Instance AddInstance(string_t name, Transformation<float_type> t);
+  const std::vector<Instance> &GetInstances() const;
+  const std::vector<Instance> &GetInstancesFollowing() const;
+  Instance AddInstance(std::string name, Transformation<float> t);
 
  protected:
   CAMERAMODE _cameraMode;
-  int_t gidClearFlags(uint_t gid);
-  uint_t gidExtractFlags(uint_t gid);
+  int gidClearFlags(unsigned gid);
+  unsigned gidExtractFlags(unsigned gid);
 
-  void doFlips(std::bitset<3> bits, ENGINE::Vector2<float_type> *v0, ENGINE::Vector2<float_type> *v1,
-               ENGINE::Vector2<float_type> *v2, ENGINE::Vector2<float_type> *v3);
-  void flipY(ENGINE::Vector2<float_type> *v0, ENGINE::Vector2<float_type> *v1, ENGINE::Vector2<float_type> *v2,
-             ENGINE::Vector2<float_type> *v3);
-  void flipX(ENGINE::Vector2<float_type> *v0, ENGINE::Vector2<float_type> *v1, ENGINE::Vector2<float_type> *v2,
-             ENGINE::Vector2<float_type> *v3);
-  void flipD(ENGINE::Vector2<float_type> *v0, ENGINE::Vector2<float_type> *v1, ENGINE::Vector2<float_type> *v2,
-             ENGINE::Vector2<float_type> *v3);
+  void doFlips(std::bitset<3> bits, Vec2f *v0, Vec2f *v1,
+               Vec2f *v2, Vec2f *v3);
+  void flipY(Vec2f *v0, Vec2f *v1, Vec2f *v2,
+             Vec2f *v3);
+  void flipX(Vec2f *v0, Vec2f *v1, Vec2f *v2,
+             Vec2f *v3);
+  void flipD(Vec2f *v0, Vec2f *v1, Vec2f *v2,
+             Vec2f *v3);
 
   SpaceDir GetSpaceProps(std::string spaceType, unsigned flags);
-  mapPathPtr findSpace(ENGINE::Vector2<int_t> position);
+  mapPathPtr findSpace(Vec2i position);
 
-  vector_t<Instance> _instances;
-  vector_t<Instance> _instancesFollowing;
+  std::vector<Instance> _instances;
+  std::vector<Instance> _instancesFollowing;
 
-  ENGINE::Vector2<uint_t> _size;
-  vector_t<Sprite> _tiles;
-  View _view;
-  View _GUIview;
+  Vec2u _size;
+  std::vector<Sprite> _tiles;
 
-  vector_t<mapPathPtr> spaces;
-  uint_t _boardStartIndex = 0;
+  std::vector<mapPathPtr> spaces;
+  unsigned _boardStartIndex = 0;
 };
 
 #endif

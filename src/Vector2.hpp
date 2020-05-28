@@ -85,8 +85,8 @@ class Vector2 {
     return *this;
   }
   inline const Vector2 operator-(void) const { return Vector2(-x, -y); }
-  inline bool_t operator==(const Vector2 &v) const { return (AreEqual(x, v.x) && AreEqual(y, v.y)); }
-  inline bool_t operator!=(const Vector2 &v) const { return (x != v.x) || (y != v.y); }
+  inline bool operator==(const Vector2 &v) const { return (AreEqual(x, v.x) && AreEqual(y, v.y)); }
+  inline bool operator!=(const Vector2 &v) const { return (x != v.x) || (y != v.y); }
 
   //VECTOR2 TO VECTOR2 OPERATIONS
   inline const Vector2 operator+(const Vector2 &v) const { return Vector2(x + v.x, y + v.y); }
@@ -146,12 +146,16 @@ class Vector2 {
   bool operator<(const Vector2 &rhs) const { return ((x << 16 | y) < (rhs.x << 16 | rhs.y)); }
 
  private:
-  bool_t AreEqual(T a, T b) const {
+  bool AreEqual(T a, T b) const {
     //change 0.1 to real precision
     return (a == b || std::fabs(a - b) <= 0.1);
   }
 };
 
 }  // namespace ENGINE
+
+using Vec2f = ENGINE::Vector2<float>;
+using Vec2i = ENGINE::Vector2<int>;
+using Vec2u = ENGINE::Vector2<unsigned>;
 
 #endif

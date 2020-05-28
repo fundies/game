@@ -7,14 +7,14 @@
 class Texture2D {
  public:
   Texture2D();
-  bool_t LoadImage(const char_t* imageFile, bool_t hasAlpha);
+  bool LoadImage(const char* imageFile, bool hasAlpha);
   void Bind() const;
-  const uint_t& GetID() const;
-  const ENGINE::Vector2<uint_t>& GetSize() const;
+  const unsigned& GetID() const;
+  const Vec2u& GetSize() const;
 
  protected:
-  uint_t _ID;
-  ENGINE::Vector2<uint_t> _size;
+  unsigned _ID;
+  Vec2u _size;
 };
 
 #endif

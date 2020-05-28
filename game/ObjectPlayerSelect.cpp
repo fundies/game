@@ -20,22 +20,22 @@ ObjectPlayerSelect::ObjectPlayerSelect()
       charIconOffset(175, 75),
       _nameIconSpr(ResourceManager::GetSprite("selectName")),
       _nameIconOffset(220, 350) {
-  banner.SetPointPosition(0, ENGINE::Vector2<float>(0, 0));
-  banner.SetPointPosition(1, ENGINE::Vector2<float>(200, 0));
-  banner.SetPointPosition(2, ENGINE::Vector2<float>(200, 1000));
-  banner.SetPointPosition(3, ENGINE::Vector2<float>(100, 1100));
-  banner.SetPointPosition(4, ENGINE::Vector2<float>(0, 1000));
+  banner.SetPointPosition(0, Vec2f(0, 0));
+  banner.SetPointPosition(1, Vec2f(200, 0));
+  banner.SetPointPosition(2, Vec2f(200, 1000));
+  banner.SetPointPosition(3, Vec2f(100, 1100));
+  banner.SetPointPosition(4, Vec2f(0, 1000));
   banner.CalcCenter();
 
-  banner.SetPivot(ENGINE::Vector2<float>(banner.GetWidth() / 2, banner.GetHeight() / 2));
+  banner.SetPivot(Vec2f(banner.GetWidth() / 2, banner.GetHeight() / 2));
 }
 
-Instance ObjectPlayerSelect::Create(Transformation<float_type> t) {
+Instance ObjectPlayerSelect::Create(Transformation<float> t) {
   Instance inst(new ObjectPlayerSelect());
   return inst;
 }
 
-void ObjectPlayerSelect::PostCollision(float_type dt) {
+void ObjectPlayerSelect::PostCollision(float dt) {
   if (Input::ButtonPressed(GameControl::Right) && currSelectColumn < selectColumns - 1) {
     changedSelection = true;
     currSelectColumn++;
@@ -80,42 +80,42 @@ void ObjectPlayerSelect::PostCollision(float_type dt) {
   if (_nameIconSpr.GetCurrentFrame() < _nameIconSpr.GetFrameCount() - 1) _nameIconSpr.UpdateFrame(dt);
 }
 
-void ObjectPlayerSelect::DrawGUI(BatchRenderer* _renderer, View& view) {
-  _renderer->DrawSprite(ResourceManager::GetSprite("menubkgd"), view);
+void ObjectPlayerSelect::DrawGUI(BatchRenderer* _renderer) {
+  _renderer->DrawSprite(ResourceManager::GetSprite("menubkgd"));
 
   //unsigned currentSelection = selectRow*2+(selectColumn);
 
   Sprite ico = ResourceManager::GetSprite("charselectphoto");
 
-  ENGINE::Vector2<float> offset((RES_W - (ico.GetTextureSize().x * selectColumns)) / 2,
+  Vec2f offset((RES_W - (ico.GetTextureSize().x * selectColumns)) / 2,
                                 (RES_H - (ico.GetTextureSize().y * selectRows)) / 2);
 
-  ENGINE::Vector2<float> selectedPlayerPos;
+  Vec2f selectedPlayerPos;
 
   for (unsigned i = 0; i < selectColumns; i++) {
     for (unsigned j = 0; j < selectRows; j++) {
-      ico.SetScale(ENGINE::Vector2<float>(1, 1));
-      ico.SetTranslation(ENGINE::Vector2<float>(i * ico.GetTextureSize().x, j * ico.GetTextureSize().y));
+      ico.SetScale(Vec2f(1, 1));
+      ico.SetTranslation(Vec2f(i * ico.GetTextureSize().x, j * ico.GetTextureSize().y));
       ico.Translate(offset);
 
       if (i == currSelectColumn && j == currSelectRow) {
         selectedPlayerPos = ico.GetTranslation();
         ico.Translate(((ico.GetTextureSize() * ico.GetScale()) - ico.GetTextureSize()) / 2);
-        ico.SetScale(ENGINE::Vector2<float>(1.1, 1.1));
+        ico.SetScale(Vec2f(1.1, 1.1));
       }
 
       else
-        _renderer->DrawSprite(ico, view);
+        _renderer->DrawSprite(ico);
     }
   }
 
-  ico.SetScale(ENGINE::Vector2<float>(1.1, 1.1));
-  ENGINE::Vector2<float> soffset = ((ico.GetTextureSize() * ico.GetScale()) - ico.GetTextureSize()) / 2;
-  ico.SetTranslation(ENGINE::Vector2<float>(selectedPlayerPos.x - soffset.x, selectedPlayerPos.y - soffset.y));
-  _renderer->DrawSprite(ico, view);
+  ico.SetScale(Vec2f(1.1, 1.1));
+  Vec2f soffset = ((ico.GetTextureSize() * ico.GetScale()) - ico.GetTextureSize()) / 2;
+  ico.SetTranslation(Vec2f(selectedPlayerPos.x - soffset.x, selectedPlayerPos.y - soffset.y));
+  _renderer->DrawSprite(ico);
 
   for (unsigned player = 0; player <= currentPlayer; ++player) {
-    ENGINE::Vector2<float> tempPos;
+    Vec2f tempPos;
     Sprite tempName = _nameIconSpr;
 
     if (player < currentPlayer) {
@@ -124,20 +124,20 @@ void ObjectPlayerSelect::DrawGUI(BatchRenderer* _renderer, View& view) {
     } else
       tempPos = bannerPos;
 
-    ENGINE::Vector2<float> flip(1, 1);
-    ENGINE::Vector2<float> scale(-1, -1);
-    ENGINE::Vector2<float> offset(0, 0);
+    Vec2f flip(1, 1);
+    Vec2f scale(-1, -1);
+    Vec2f offset(0, 0);
     int rot = 45;
 
     Sprite characterIcon = ResourceManager::GetSprite("trevor_player_select");
     Text name("LuckiestGuy_52", "Trevor");
 
-    ENGINE::Vector2<float> iconScale(1, 1);
-    ENGINE::Vector2<float> iconOffset(0, 0);
+    Vec2f iconScale(1, 1);
+    Vec2f iconOffset(0, 0);
 
-    ENGINE::Vector2<float> nameScale(1, 1);
-    ENGINE::Vector2<float> nameOffset(0, 0);
-    ENGINE::Vector2<float> nameTextOffset(0, 0);
+    Vec2f nameScale(1, 1);
+    Vec2f nameOffset(0, 0);
+    Vec2f nameTextOffset(0, 0);
 
     nameOffset.y = _nameIconOffset.y;
 
@@ -205,90 +205,90 @@ void ObjectPlayerSelect::DrawGUI(BatchRenderer* _renderer, View& view) {
     banner.SetScale(scale);
     banner.SetRotation(rot);
     banner.SetColor(color);
-    //_renderer->DrawConvexShape(banner, view);
+    //_renderer->DrawConvexShape(banner);
 
     tempName.SetTranslation(nameOffset);
     tempName.SetColor(color);
     tempName.SetScale(nameScale);
-    _renderer->DrawSprite(tempName, view);
+    _renderer->DrawSprite(tempName);
 
-    name.SetScale(ENGINE::Vector2<float>(1.5, 1.5));
+    name.SetScale(Vec2f(1.5, 1.5));
     name.Translate(nameTextOffset);
-    _renderer->DrawText(name, view);
+    _renderer->DrawText(name);
 
     characterIcon.Translate(iconOffset);
     characterIcon.SetScale(iconScale);
-    _renderer->DrawSprite(characterIcon, view);
+    _renderer->DrawSprite(characterIcon);
   }
 
   /*if (currentPlayer >= 0)
 	{
-		ENGINE::Vector2<float> bannerPos = p;
+		Vec2f bannerPos = p;
 
 		if (currentPlayer > 0)
-			bannerPos = ENGINE::Vector2<float>(-100, -100);
+			bannerPos = Vec2f(-100, -100);
 
-		banner.SetTranslation(ENGINE::Vector2<float>(-40 - bannerPos.x, -200 + bannerPos.y));
+		banner.SetTranslation(Vec2f(-40 - bannerPos.x, -200 + bannerPos.y));
 
-		banner.SetScale(ENGINE::Vector2<float>(1, -1));
+		banner.SetScale(Vec2f(1, -1));
 		banner.SetRotation(45);
-		_renderer->DrawConvexShape(banner, view);
+		_renderer->DrawConvexShape(banner);
 
 		Sprite icon = ResourceManager::GetSprite("trevor_player_select");
-		icon.Translate(ENGINE::Vector2<float>(175, 75));
-		_renderer->DrawSprite(icon, view);
+		icon.Translate(Vec2f(175, 75));
+		_renderer->DrawSprite(icon);
 	}
 
 	if (currentPlayer >= 1)
 	{
-		ENGINE::Vector2<float> bannerPos = p;
+		Vec2f bannerPos = p;
 
 		if (currentPlayer > 1)
-			bannerPos = ENGINE::Vector2<float>(-100, -100);
+			bannerPos = Vec2f(-100, -100);
 
 		banner.SetTranslation(ENGINE::Vector2(-40.f - bannerPos.x, 200.f - bannerPos.y));
-		banner.SetScale(ENGINE::Vector2<float>(1, 1));
+		banner.SetScale(Vec2f(1, 1));
 		banner.SetRotation(-45);
-		_renderer->DrawConvexShape(banner, view);
+		_renderer->DrawConvexShape(banner);
 
 		Sprite icon = ResourceManager::GetSprite("trevor_player_select");
-		icon.Translate(ENGINE::Vector2<float>(175, 1080-75-icon.GetTextureSize().y));
-		_renderer->DrawSprite(icon, view);
+		icon.Translate(Vec2f(175, 1080-75-icon.GetTextureSize().y));
+		_renderer->DrawSprite(icon);
 	}
 
 	if (currentPlayer >= 2)
 	{
-		ENGINE::Vector2<float> bannerPos = p;
+		Vec2f bannerPos = p;
 
 		if (currentPlayer > 2)
-			bannerPos = ENGINE::Vector2<float>(-100, -100);
+			bannerPos = Vec2f(-100, -100);
 
 		banner.SetTranslation(ENGINE::Vector2(1920 - (200) + 40 + bannerPos.x, -200.f + bannerPos.y));
-		banner.SetScale(ENGINE::Vector2<float>(1, -1));
+		banner.SetScale(Vec2f(1, -1));
 		banner.SetRotation(-45);
-		_renderer->DrawConvexShape(banner, view);
+		_renderer->DrawConvexShape(banner);
 
 		Sprite icon = ResourceManager::GetSprite("trevor_player_select");
-		icon.Translate(ENGINE::Vector2<float>(1920 - 175, 75));
-		icon.SetScale(ENGINE::Vector2<float>(-1, 1));
-		_renderer->DrawSprite(icon, view);
+		icon.Translate(Vec2f(1920 - 175, 75));
+		icon.SetScale(Vec2f(-1, 1));
+		_renderer->DrawSprite(icon);
 	}
 
 	if (currentPlayer >= 3)
 	{
-		ENGINE::Vector2<float> bannerPos = p;
+		Vec2f bannerPos = p;
 
 		if (currentPlayer > 3)
-			bannerPos = ENGINE::Vector2<float>(-100, -100);
+			bannerPos = Vec2f(-100, -100);
 
 		banner.SetTranslation(ENGINE::Vector2(1920 - (200) + 40 + bannerPos.x, 200.f - bannerPos.y));
-		banner.SetScale(ENGINE::Vector2<float>(1, 1));
+		banner.SetScale(Vec2f(1, 1));
 		banner.SetRotation(45);
-		_renderer->DrawConvexShape(banner, view);
+		_renderer->DrawConvexShape(banner);
 
 		Sprite icon = ResourceManager::GetSprite("trevor_player_select");
-		icon.Translate(ENGINE::Vector2<float>(1920 - 175, 1080-75-icon.GetTextureSize().y));
-		icon.SetScale(ENGINE::Vector2<float>(-1, 1));
-		_renderer->DrawSprite(icon, view);
+		icon.Translate(Vec2f(1920 - 175, 1080-75-icon.GetTextureSize().y));
+		icon.SetScale(Vec2f(-1, 1));
+		_renderer->DrawSprite(icon);
 	}*/
 }

@@ -8,9 +8,9 @@
 class ObjectPlayerSelect : public Object {
  public:
   virtual ~ObjectPlayerSelect() {}
-  static Instance Create(Transformation<float_type> t);
-  void PostCollision(float_type dt) override;
-  void DrawGUI(BatchRenderer* _renderer, View& view) override;
+  static Instance Create(Transformation<float> t);
+  void PostCollision(float dt) override;
+  void DrawGUI(BatchRenderer* _renderer) override;
 
  protected:
   ObjectPlayerSelect();
@@ -25,16 +25,16 @@ class ObjectPlayerSelect : public Object {
   unsigned playerCount;
 
   ConvexShape banner;
-  ENGINE::Vector2<float> bannerStartPos;
-  ENGINE::Vector2<float> bannerPos;
-  ENGINE::Vector2<float> bannerEndPos;
-  ENGINE::Vector2<float> bannerOffset;
+  Vec2f bannerStartPos;
+  Vec2f bannerPos;
+  Vec2f bannerEndPos;
+  Vec2f bannerOffset;
   float bannerSpeed;
 
-  ENGINE::Vector2<float> charIconOffset;
+  Vec2f charIconOffset;
 
   Sprite _nameIconSpr;
-  ENGINE::Vector2<float> _nameIconOffset;
+  Vec2f _nameIconOffset;
 };
 
 #endif

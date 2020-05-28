@@ -11,35 +11,35 @@
 
 class ResourceManager {
  public:
-  static map_t<string_t, Shader> Shaders;
-  static map_t<string_t, Texture2D> Textures;
-  static map_t<string_t, Atlas> Atlases;
-  static map_t<string_t, Sprite> Sprites;
-  static map_t<string_t, Mask> Masks;
-  static map_t<string_t, Level> Levels;
+  static std::map<std::string, Shader> Shaders;
+  static std::map<std::string, Texture2D> Textures;
+  static std::map<std::string, Atlas> Atlases;
+  static std::map<std::string, Sprite> Sprites;
+  static std::map<std::string, Mask> Masks;
+  static std::map<std::string, Level> Levels;
   static Level* CurrentLevel;
 
-  static Shader& LoadShader(const char_t* vShaderFile, const char_t* fShaderFile, const char_t* gShaderFile,
-                            string_t name);
-  static Shader& GetShader(string_t name);
+  static Shader& LoadShader(const char* vShaderFile, const char* fShaderFile, const char* gShaderFile,
+                            std::string name);
+  static Shader& GetShader(std::string name);
 
-  static Texture2D& LoadTexture(const char_t* file, bool_t alpha, string_t name);
-  static Texture2D& GetTexture(string_t name);
+  static Texture2D& LoadTexture(const char* file, bool alpha, std::string name);
+  static Texture2D& GetTexture(std::string name);
 
-  static Atlas& LoadAtlas(const char_t* file, bool_t alpha, string_t name);
-  static Atlas& GetAtlas(string_t name);
+  static Atlas& LoadAtlas(const char* file, bool alpha, std::string name);
+  static Atlas& GetAtlas(std::string name);
 
-  static const Sprite LoadSprite(const char_t* file);
-  static const Sprite GetSprite(string_t name);
+  static const Sprite LoadSprite(const char* file);
+  static const Sprite GetSprite(std::string name);
 
-  static const Mask LoadMask(const char_t* file, string_t name);
-  static const Mask GetMask(string_t name);
+  static const Mask LoadMask(const char* file, std::string name);
+  static const Mask GetMask(std::string name);
 
-  static Level& CreateLevel(string_t name, CAMERAMODE mode);
-  static Level& LoadLevel(const char_t* file, string_t name, CAMERAMODE mode);
-  static Level& GetLevel(string_t name);
+  static Level& CreateLevel(std::string name, CAMERAMODE mode);
+  static Level& LoadLevel(const char* file, std::string name, CAMERAMODE mode);
+  static Level& GetLevel(std::string name);
 
-  static void SetCurrentLevel(string_t name);
+  static void SetCurrentLevel(std::string name);
   static Level* GetCurrentLevel();
 
   static void Clear();

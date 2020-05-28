@@ -3,16 +3,16 @@
 #include "XMLParser.hpp"
 #include "Logger.hpp"
 
-map_t<string_t, Texture2D> ResourceManager::Textures;
-map_t<string_t, Shader> ResourceManager::Shaders;
-map_t<string_t, Atlas> ResourceManager::Atlases;
-map_t<string_t, Sprite> ResourceManager::Sprites;
-map_t<string_t, Mask> ResourceManager::Masks;
-map_t<string_t, Level> ResourceManager::Levels;
+std::map<std::string, Texture2D> ResourceManager::Textures;
+std::map<std::string, Shader> ResourceManager::Shaders;
+std::map<std::string, Atlas> ResourceManager::Atlases;
+std::map<std::string, Sprite> ResourceManager::Sprites;
+std::map<std::string, Mask> ResourceManager::Masks;
+std::map<std::string, Level> ResourceManager::Levels;
 Level* ResourceManager::CurrentLevel;
 
-Shader& ResourceManager::LoadShader(const char_t* vShaderFile, const char_t* fShaderFile, const char_t* gShaderFile,
-                                    string_t name) {
+Shader& ResourceManager::LoadShader(const char* vShaderFile, const char* fShaderFile, const char* gShaderFile,
+                                    std::string name) {
   Shader shader;
   shader.LoadShaderFile(vShaderFile, fShaderFile, gShaderFile);
 
@@ -21,9 +21,9 @@ Shader& ResourceManager::LoadShader(const char_t* vShaderFile, const char_t* fSh
   return Shaders[name];
 }
 
-Shader& ResourceManager::GetShader(string_t name) { return Shaders[name]; }
+Shader& ResourceManager::GetShader(std::string name) { return Shaders[name]; }
 
-Texture2D& ResourceManager::LoadTexture(const char_t* file, bool_t alpha, string_t name) {
+Texture2D& ResourceManager::LoadTexture(const char* file, bool alpha, std::string name) {
   Texture2D texture;
   texture.LoadImage(file, alpha);
 
@@ -31,9 +31,9 @@ Texture2D& ResourceManager::LoadTexture(const char_t* file, bool_t alpha, string
   return Textures[name];
 }
 
-Texture2D& ResourceManager::GetTexture(string_t name) { return Textures[name]; }
+Texture2D& ResourceManager::GetTexture(std::string name) { return Textures[name]; }
 
-Atlas& ResourceManager::LoadAtlas(const char_t* file, bool_t alpha, string_t name) {
+Atlas& ResourceManager::LoadAtlas(const char* file, bool alpha, std::string name) {
   Atlas atlas;
   atlas.LoadXML(file, true);
 
@@ -47,11 +47,11 @@ Atlas& ResourceManager::LoadAtlas(const char_t* file, bool_t alpha, string_t nam
   return Atlases.at(name);
 }
 
-Atlas& ResourceManager::GetAtlas(string_t name) { return Atlases[name]; }
+Atlas& ResourceManager::GetAtlas(std::string name) { return Atlases[name]; }
 
-const Sprite ResourceManager::LoadSprite(const char_t* file) {
+const Sprite ResourceManager::LoadSprite(const char* file) {
   Sprite spr;
-  string_t name;
+  std::string name;
 
   try {
     XMLParser parser;
@@ -64,12 +64,12 @@ const Sprite ResourceManager::LoadSprite(const char_t* file) {
     parser.Parse();
 
     name = parser.Root->Attr.at("name")->GetString();
-    float_type speed = parser.Root->Attr.at("speed")->GetFloat();
+    float speed = parser.Root->Attr.at("speed")->GetFloat();
 
     spr.SetAnimationSpeed(speed);
 
     for (auto frameTag : parser.Root->Child.at("frame")) {
-      string_t src = remove_extension(frameTag->Attr.at("src")->GetString());
+      std::string src = remove_extension(frameTag->Attr.at("src")->GetString());
       spr.AddFrame(ResourceManager::GetAtlas("test").GetTextureQuad(src));
     }
   } catch (std::exception e) {
@@ -82,7 +82,7 @@ const Sprite ResourceManager::LoadSprite(const char_t* file) {
   return Sprites.at(name);
 }
 
-const Sprite ResourceManager::GetSprite(string_t name) {
+const Sprite ResourceManager::GetSprite(std::string name) {
   try {
     return Sprites.at(name);
   } catch (std::exception e) {
@@ -91,7 +91,7 @@ const Sprite ResourceManager::GetSprite(string_t name) {
   }
 }
 
-const Mask ResourceManager::LoadMask(const char_t* file, string_t name) {
+const Mask ResourceManager::LoadMask(const char* file, std::string name) {
   Mask m;
   m.LoadXML(file);
 
@@ -100,9 +100,9 @@ const Mask ResourceManager::LoadMask(const char_t* file, string_t name) {
   return Masks[name];
 }
 
-const Mask ResourceManager::GetMask(string_t name) { return Masks[name]; }
+const Mask ResourceManager::GetMask(std::string name) { return Masks[name]; }
 
-Level& ResourceManager::CreateLevel(string_t name, CAMERAMODE mode) {
+Level& ResourceManager::CreateLevel(std::string name, CAMERAMODE mode) {
   Level lvl(mode);
 
   Levels[name] = lvl;
@@ -110,7 +110,7 @@ Level& ResourceManager::CreateLevel(string_t name, CAMERAMODE mode) {
   return Levels[name];
 }
 
-Level& ResourceManager::LoadLevel(const char_t* file, string_t name, CAMERAMODE mode) {
+Level& ResourceManager::LoadLevel(const char* file, std::string name, CAMERAMODE mode) {
   Level lvl(mode);
   lvl.LoadTMX(file);
 
@@ -119,7 +119,7 @@ Level& ResourceManager::LoadLevel(const char_t* file, string_t name, CAMERAMODE 
   return Levels[name];
 }
 
-Level& ResourceManager::GetLevel(string_t name) { return Levels[name]; }
+Level& ResourceManager::GetLevel(std::string name) { return Levels[name]; }
 
 void ResourceManager::Clear() {
   // (Properly) delete all shaders
@@ -129,6 +129,6 @@ void ResourceManager::Clear() {
   for (auto iter : Textures) glDeleteTextures(1, &iter.second.GetID());
 }
 
-void ResourceManager::SetCurrentLevel(string_t name) { CurrentLevel = &Levels.at(name); }
+void ResourceManager::SetCurrentLevel(std::string name) { CurrentLevel = &Levels.at(name); }
 
 Level* ResourceManager::GetCurrentLevel() { return CurrentLevel; }

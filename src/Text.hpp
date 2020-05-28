@@ -9,31 +9,31 @@
 class Text : public Transformable {
  public:
   Text();
-  Text(string_t font, string_t string);
+  Text(std::string font, std::string string);
 
-  void SetScale(const ENGINE::Vector2<float_type>& scale);
+  void SetScale(const Vec2f& scale);
   void SetColor(const Color& _color);
-  void SetFont(const string_t& _font);
-  void SetString(const string_t& _string);
+  void SetFont(const std::string& _font);
+  void SetString(const std::string& _string);
   void SetShadowColor(const Color& _shadowColor);
-  void SetShadowPosition(const ENGINE::Vector2<float_type>& _shadowPosition);
+  void SetShadowPosition(const Vec2f& _shadowPosition);
   const Color& GetShadowColor() const;
-  const ENGINE::Vector2<float_type>& GetShadowPosition() const;
+  const Vec2f& GetShadowPosition() const;
 
   const Color& GetColor() const;
-  const string_t& GetFont() const;
-  const string_t& GetString() const;
+  const std::string& GetFont() const;
+  const std::string& GetString() const;
 
-  const ENGINE::Vector2<float_type>& GetTextureSize() const;
-  const vector_t<Sprite>& GetLetters() const;
+  const Vec2f& GetTextureSize() const;
+  const std::vector<Sprite>& GetLetters() const;
 
  protected:
-  string_t _font;
-  string_t _string;
+  std::string _font;
+  std::string _string;
   Color _color;
-  vector_t<Sprite> _letters;
-  ENGINE::Vector2<float_type> _textureSize;
-  ENGINE::Vector2<float_type> _shadowPosition;
+  std::vector<Sprite> _letters;
+  Vec2f _textureSize;
+  Vec2f _shadowPosition;
   Color _shadowColor;
 };
 

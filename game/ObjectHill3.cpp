@@ -2,7 +2,7 @@
 
 #include "ResourceManager.hpp"
 
-Instance ObjectHill3::Create(Transformation<float_type> t) {
+Instance ObjectHill3::Create(Transformation<float> t) {
   Instance inst(new ObjectHill3());
   inst->SetSprite(ResourceManager::GetSprite("hill_3"));
 
@@ -18,17 +18,17 @@ Instance ObjectHill3::Create(Transformation<float_type> t) {
   mask.SetRotation(t.GetRotation());
   mask.Transform();
 
-  inst->SetMask(mask);
+  inst->AddMask(mask);
 
   return inst;
 }
 
 ObjectHill3::ObjectHill3() : ObjectPlatform() { slope = 1.0f; }
 
-void ObjectHill3::PostCollision(float_type dt) {}
+void ObjectHill3::PostCollision(float dt) {}
 
 void ObjectHill3::Collision(CollisionInfo collision) {}
 
-void ObjectHill3::Draw(BatchRenderer* renderer, View& view) { Object::Draw(renderer, view); }
+void ObjectHill3::Draw(BatchRenderer* renderer) { Object::Draw(renderer); }
 
-void ObjectHill3::DrawGUI(BatchRenderer* renderer, View& view) {}
+void ObjectHill3::DrawGUI(BatchRenderer* renderer) {}

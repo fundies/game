@@ -11,16 +11,16 @@
 class Drawable {
  public:
   Drawable(std::initializer_list<Vertex> verticies = {},
-           Transformation<float_type> transform = Transformation<float_type>());
+           Transformation<float> transform = Transformation<float>());
 
   Vertex& GetCenter();
   void SetCenter(Vertex center);
 
-  Vertex& GetVertex(uint_t index);
-  void SetVertex(uint_t index, Vertex vertex);
+  Vertex& GetVertex(unsigned index);
+  void SetVertex(unsigned index, Vertex vertex);
 
-  uint_t GetVertexCount();
-  void SetVertexCount(uint_t count);
+  unsigned GetVertexCount();
+  void SetVertexCount(unsigned count);
 
   Texture2D& GetTexture();
   void SetTexture(Texture2D& texture);
@@ -30,7 +30,7 @@ class Drawable {
 
  protected:
   Vertex _center;
-  vector_t<Vertex> _vertices;
+  std::vector<Vertex> _vertices;
   //Transform _transform;
 };
 

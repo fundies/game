@@ -7,30 +7,31 @@
 Mask::Mask() {}
 
 Mask::Mask(const Mask& mask) {
-  SetTranslation(mask.GetTranslation());
-  SetRotation(mask.GetRotation());
-  SetScale(mask.GetScale());
-  SetPivot(mask.GetPivot());
+  _transform.SetTranslation(mask.GetTranslation());
+  _transform.SetRotation(mask.GetRotation());
+  _transform.SetScale(mask.GetScale());
+  _transform.SetPivot(mask.GetPivot());
+  IsCircle = mask.IsCircle;
   _shape = std::shared_ptr<Crash2D::Shape>(mask.GetShape()->Clone());
   Transform();
 }
 
-bool_t Mask::LoadXML(const char_t* xmlFile) {
+bool Mask::LoadXML(const char* xmlFile) {
   try {
     XMLParser parser;
 
     if (!parser.Open(xmlFile)) return false;
 
     auto typeElement = parser.Root->Child.begin();
-    string_t type = typeElement->first;
+    std::string type = typeElement->first;
 
     if (type == "polyline") {
-      string_t pointsStr = typeElement->second[0]->Attr.at("points")->GetString();
+      std::string pointsStr = typeElement->second[0]->Attr.at("points")->GetString();
 
       std::istringstream ss(pointsStr);
       std::string token;
 
-      vector_t<Crash2D::Vector2> points;
+      std::vector<Crash2D::Vector2> points;
 
       while (std::getline(ss, token, ' ')) {
         float x, y;
@@ -43,12 +44,20 @@ bool_t Mask::LoadXML(const char_t* xmlFile) {
         _shape = std::shared_ptr<Crash2D::Polygon>(new Crash2D::Polygon());
         _shape->SetPointCount(points.size() - 1);
 
-        for (uint_t point = 0; point < points.size() - 1; point++) {
+        for (unsigned point = 0; point < points.size() - 1; point++) {
           _shape->SetPoint(point, points[point]);
         }
 
         _shape->ReCalc();
       }
+    } else if (type == "circle") {
+      float cx, cy, radius;
+      cx = typeElement->second[0]->Attr.at("cx")->GetUnsigned();
+      cy = typeElement->second[0]->Attr.at("cy")->GetUnsigned();
+      radius = typeElement->second[0]->Attr.at("r")->GetUnsigned();
+      _shape = std::shared_ptr<Crash2D::Circle>(new Crash2D::Circle(Crash2D::Vector2(cx, cy), radius));
+      IsCircle = true;
+      _shape->ReCalc();
     }
 
   } catch (std::exception e) {
@@ -61,7 +70,7 @@ bool_t Mask::LoadXML(const char_t* xmlFile) {
 
 const std::shared_ptr<Crash2D::Shape>& Mask::GetShape() const { return _shape; }
 
-void Mask::SetTranslation(const ENGINE::Vector2<float_type>& t) {
+void Mask::SetTranslation(const Vec2f& t) {
   if (_shape != nullptr) {
     Transformable::SetTranslation(t);
 
@@ -72,7 +81,7 @@ void Mask::SetTranslation(const ENGINE::Vector2<float_type>& t) {
   }
 }
 
-void Mask::SetRotation(const float_type r) {
+void Mask::SetRotation(const float r) {
   if (_shape != nullptr) {
     Transformable::SetRotation(r);
 
@@ -83,7 +92,7 @@ void Mask::SetRotation(const float_type r) {
   }
 }
 
-void Mask::Translate(const ENGINE::Vector2<float_type>& t) {
+void Mask::Translate(const Vec2f& t) {
   if (_shape != nullptr) {
     Transformable::Translate(t);
 
@@ -94,7 +103,7 @@ void Mask::Translate(const ENGINE::Vector2<float_type>& t) {
   }
 }
 
-void Mask::SetScale(const ENGINE::Vector2<float_type>& s) {
+void Mask::SetScale(const Vec2f& s) {
   if (_shape != nullptr) {
     Transformable::SetScale(s);
 
@@ -105,7 +114,7 @@ void Mask::SetScale(const ENGINE::Vector2<float_type>& s) {
   }
 }
 
-void Mask::SetPivot(const ENGINE::Vector2<float_type>& p) {
+void Mask::SetPivot(const Vec2f& p) {
   if (_shape != nullptr) {
     Transformable::SetPivot(p);
 
@@ -125,20 +134,27 @@ void Mask::Transform() {
   Bottom = -std::numeric_limits<float>::infinity();
   Left = std::numeric_limits<float>::infinity();
   Right = -std::numeric_limits<float>::infinity();
+  
+  if (_shape->IsCircle) {
+    Top = _shape->GetCenter().y - _shape->GetRadius();
+    Bottom = _shape->GetCenter().y + _shape->GetRadius();
+    Left = _shape->GetCenter().x - _shape->GetRadius();
+    Right = _shape->GetCenter().x + _shape->GetRadius();
+  } else {
+    for (auto p : _shape->GetPoints()) {
+      if (p.y < Top) Top = p.y;
 
-  for (auto p : _shape->GetPoints()) {
-    if (p.y < Top) Top = p.y;
+      if (p.y > Bottom) Bottom = p.y;
 
-    if (p.y > Bottom) Bottom = p.y;
+      if (p.x > Right) Right = p.x;
 
-    if (p.x > Right) Right = p.x;
-
-    if (p.x < Left) Left = p.x;
+      if (p.x < Left) Left = p.x;
+    }
   }
 }
 
-const Crash2D::Collision Mask::GetCollision(const Mask& mask, ENGINE::Vector2<float_type> aV,
-                                            ENGINE::Vector2<float_type> bV) const {
+const Crash2D::Collision Mask::GetCollision(const Mask& mask, Vec2f aV,
+                                            Vec2f bV) const {
   if (GetShape() != nullptr && mask.GetShape() != nullptr) {
     return GetShape()->GetCollision(*mask.GetShape().get());
   }

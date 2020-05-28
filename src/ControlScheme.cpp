@@ -23,4 +23,4 @@ void ControlScheme::PrintControls() const {}
 
 void ControlScheme::WriteConfig(std::string fname) const {}
 
-bool_t ControlScheme::ReadConfig(std::string fname) { return false; }
+bool ControlScheme::ReadConfig(std::string fname) { return false; }

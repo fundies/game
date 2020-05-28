@@ -9,7 +9,7 @@
 #include <iostream>
 #include <random>
 
-Game::Game(uint_t width, uint_t height) : _state(GAME_ACTIVE), _renderer(nullptr) {}
+Game::Game(unsigned width, unsigned height) : _state(GAME_ACTIVE), _renderer(nullptr) {}
 
 Game::~Game() { delete _renderer; }
 
@@ -22,7 +22,7 @@ void Game::Init() {
   ResourceManager::LoadShader(getResPath("/shaders/scale.vs").c_str(), getResPath("/shaders/scale.frag").c_str(), nullptr, "scale");
 
   // Load textures
-  ResourceManager::LoadAtlas(getResPath("/textures/Atlas.xml").c_str(), GL_TRUE, "test");
+  ResourceManager::LoadAtlas(getResPath("/textures/AtlasInfo.xml").c_str(), GL_TRUE, "test");
 
   ResourceManager::LoadSprite(getResPath("/animations/ani_mapIcon.xml").c_str());
   ResourceManager::LoadSprite(getResPath("/animations/ani_mapArrow.xml").c_str());
@@ -33,28 +33,30 @@ void Game::Init() {
   ResourceManager::LoadMask(getResPath("/masks/hill_1.svg").c_str(), "hill_1");
   ResourceManager::LoadMask(getResPath("/masks/hill_2.svg").c_str(), "hill_2");
   ResourceManager::LoadMask(getResPath("/masks/hill_3.svg").c_str(), "hill_3");
-  ResourceManager::LoadMask(getResPath("/masks/mask_greg.svg").c_str(), "mask_greg");
+  //ResourceManager::LoadMask(getResPath("/masks/mask_greg.svg").c_str(), "mask_greg");
+  ResourceManager::LoadMask(getResPath("/masks/collectible.svg").c_str(), "mask_greg");
+
 
   // Set render-specific controls
   _renderer = new BatchRenderer();
 
   //ResourceManager::CreateLevel("playerselect", CAMERAMODE::CAMERA_SINGLE);
-  //ResourceManager::GetLevel("playerselect").AddInstance("PlayerSelect", Transformation<float_type>());
+  //ResourceManager::GetLevel("playerselect").AddInstance("PlayerSelect", Transformation<float>());
 
   //ResourceManager::LoadLevel(getResPath("/maps/sutton.tmx", "sutton", CAMERAMODE::CAMERA_SINGLE);
-  //ResourceManager::GetLevel("sutton").AddInstance("HUD", Transformation<float_type>());
+  //ResourceManager::GetLevel("sutton").AddInstance("HUD", Transformation<float>());
 
-  ResourceManager::LoadLevel(getResPath("/maps/collect1.tmx").c_str(), "collect1", CAMERAMODE::CAMERA_GROUP);
+  ResourceManager::LoadLevel(getResPath("/maps/race_lvl.tmx").c_str(), "collect1", CAMERAMODE::CAMERA_GROUP);
 
   //ResourceManager::SetCurrentLevel("playerselect");
   ResourceManager::SetCurrentLevel("collect1");
 
-  ResourceManager::GetLevel("collect1").AddInstance("mask_greg", Transformation<float_type>());
-  ResourceManager::GetLevel("collect1").AddInstance("mask_greg", Transformation<float_type>());
-  //ResourceManager::AddInstance("HUD", ENGINE::Vector2<float_t>(0,0));
+  //ResourceManager::GetLevel("collect1").AddInstance("mask_greg", Transformation<float>());
+  //ResourceManager::GetLevel("collect1").AddInstance("mask_greg", Transformation<float>());
+  //ResourceManager::AddInstance("HUD", Vec2f(0,0));
 }
 
-void Game::Update(float_type dt) {
+void Game::Update(float dt) {
   /*for (auto &obj : ResourceManager::GetCurrentLevel()->GetInstances())
 	{
 		//obj->PostCollision(dt);
@@ -64,22 +66,25 @@ void Game::Update(float_type dt) {
     if (!instA->IsStatic()) {
       unsigned step = 4;
 
-      ENGINE::Vector2<float_type> t(instA->hSpeed, instA->vSpeed);
+      Vec2f t(instA->hSpeed, instA->vSpeed);
       t /= step;
 
       for (unsigned i = 0; i < step; i++) {
-        if (instA->_mask.GetShape() != nullptr) {
-          instA->_mask.Translate(t);
-          instA->_mask.Transform();
-        }
+        for (auto& mask : instA->_mask) {
+          if (mask.GetShape() != nullptr) {
+            mask.Translate(t);
+            mask.Transform();
+          }
 
-        for (auto instB : ResourceManager::GetCurrentLevel()->GetInstances()) {
-          if (instA != instB) {
-            Crash2D::Collision collision = instA->GetCollision(instB);
-
-            if (collision.Overlaps()) {
-              instA->AddCollision(CollisionInfo(instB, collision));
-              instA->Collision(CollisionInfo(instB, collision));
+          for (auto instB : ResourceManager::GetCurrentLevel()->GetInstances()) {
+            if (instA != instB) {
+              auto collisions = instA->GetCollision(instB);
+                for (auto& collision : collisions) {
+                if (collision.Overlaps()) {
+                  instA->AddCollision(CollisionInfo(instB, collision));
+                  instA->Collision(CollisionInfo(instB, collision));
+                }
+              }
             }
           }
         }
@@ -95,24 +100,24 @@ void Game::Update(float_type dt) {
   //Input::ResetButtons();
 }
 
-void Game::ProcessInput(float_type dt) {}
+void Game::ProcessInput(float dt) {}
 
 void Game::Render() {
   _renderer->Clear();
 
   for (auto& spr : ResourceManager::GetCurrentLevel()->GetTiles()) {
-    _renderer->DrawSprite(spr, ResourceManager::GetCurrentLevel()->GetView());
+    _renderer->DrawSprite(spr);
   }
 
   for (auto& obj : ResourceManager::GetCurrentLevel()->GetInstances()) {
-    obj->Draw(_renderer, ResourceManager::GetCurrentLevel()->GetView());
+    obj->Draw(_renderer);
   }
 
   /// split ///
   _renderer->SetCoordSplit();
 
   for (auto& obj : ResourceManager::GetCurrentLevel()->GetInstances()) {
-    obj->DrawGUI(_renderer, ResourceManager::GetCurrentLevel()->GetGUIview());
+    obj->DrawGUI(_renderer);
   }
 
   _renderer->MapData();
@@ -127,10 +132,10 @@ BatchRenderer* Game::GetRenderer() { return _renderer; }
 
 const GameState& Game::GetState() const { return _state; }
 
-ENGINE::Vector2<int_t> Game::_windowSize(1280, 720);
+Vec2i Game::_windowSize(1280, 720);
 
-void Game::SetWindowSize(const ENGINE::Vector2<int_t> _windowSize) {
+void Game::SetWindowSize(const Vec2i _windowSize) {
   Game::_windowSize = _windowSize;
 }
 
-const ENGINE::Vector2<int_t> Game::GetWindowSize() { return Game::_windowSize; }
+const Vec2i Game::GetWindowSize() { return Game::_windowSize; }

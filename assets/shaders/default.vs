@@ -7,6 +7,11 @@ out vec4 Color;
 
 uniform vec2 outTextureSize;
 uniform mat4 projection;
+uniform vec2 textureSize;
+
+float r(float N, float L) {
+ return (0.5/L)+(N/L);
+}
 
 void main()
 {
@@ -14,8 +19,5 @@ void main()
 
     texCoords = vertex.zw;
     
-    //float ox = ((vertex.x + cameraPos.x) / (outTextureSize.x / 2.0)) - 1.0;
-    //float oy = ((-vertex.y - cameraPos.y) / (outTextureSize.y / 2.0)) + 1.0;
-    
-    gl_Position = projection * vec4(vertex.xy, 0.0, 1.0);
+    gl_Position = projection * vec4(vertex.x, vertex.y, 0.0, 1.0);
 }

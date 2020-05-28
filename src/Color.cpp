@@ -3,66 +3,66 @@
 #include <algorithm>
 
 Color::Color(GLubyte Red, GLubyte Green, GLubyte Blue, GLubyte Alpha)
-    : Red(Red), Green(Green), Blue(Blue), Alpha(Alpha) {}
+    : RedVal(Red), GreenVal(Green), BlueVal(Blue), AlphaVal(Alpha) {}
 
-bool_t Color::operator==(const Color& right) const {
-  return (this->Red == right.Red) && (this->Green == right.Green) && (this->Blue == right.Blue) &&
-         (this->Alpha == right.Alpha);
+bool Color::operator==(const Color& right) const {
+  return (this->RedVal == right.RedVal) && (this->GreenVal == right.GreenVal) && (this->BlueVal == right.BlueVal) &&
+         (this->AlphaVal == right.AlphaVal);
 }
 
-bool_t Color::operator!=(const Color& right) const { return !(*this == right); }
+bool Color::operator!=(const Color& right) const { return !(*this == right); }
 
 Color Color::operator+(const Color& right) const {
   return Color(
-      GLubyte(std::min(int_t(this->Red) + right.Red, 255)), GLubyte(std::min(int_t(this->Green) + right.Green, 255)),
-      GLubyte(std::min(int_t(this->Blue) + right.Blue, 255)), GLubyte(std::min(int_t(this->Alpha) + right.Alpha, 255)));
+      GLubyte(std::min(int(this->RedVal) + right.RedVal, 255)), GLubyte(std::min(int(this->GreenVal) + right.GreenVal, 255)),
+      GLubyte(std::min(int(this->BlueVal) + right.BlueVal, 255)), GLubyte(std::min(int(this->AlphaVal) + right.AlphaVal, 255)));
 }
 
 Color Color::operator-(const Color& right) const {
   return Color(
-      GLubyte(std::max(int_t(this->Red) - right.Red, 0)), GLubyte(std::max(int_t(this->Green) - right.Green, 0)),
-      GLubyte(std::max(int_t(this->Blue) - right.Blue, 0)), GLubyte(std::max(int_t(this->Alpha) - right.Alpha, 0)));
+      GLubyte(std::max(int(this->RedVal) - right.RedVal, 0)), GLubyte(std::max(int(this->GreenVal) - right.GreenVal, 0)),
+      GLubyte(std::max(int(this->BlueVal) - right.BlueVal, 0)), GLubyte(std::max(int(this->AlphaVal) - right.AlphaVal, 0)));
 }
 
 Color Color::operator*(const Color& right) const {
-  return Color(GLubyte(int_t(this->Red) * right.Red / 255), GLubyte(int_t(this->Green) * right.Green / 255),
-               GLubyte(int_t(this->Blue) * right.Blue / 255), GLubyte(int_t(this->Alpha) * right.Alpha / 255));
+  return Color(GLubyte(int(this->RedVal) * right.RedVal / 255), GLubyte(int(this->GreenVal) * right.GreenVal / 255),
+               GLubyte(int(this->BlueVal) * right.BlueVal / 255), GLubyte(int(this->AlphaVal) * right.AlphaVal / 255));
 }
 
 Color& Color::operator+=(const Color& right) {
   Color temp = Color(
-      GLubyte(std::min(int_t(this->Red) + right.Red, 255)), GLubyte(std::min(int_t(this->Green) + right.Green, 255)),
-      GLubyte(std::min(int_t(this->Blue) + right.Blue, 255)), GLubyte(std::min(int_t(this->Alpha) + right.Alpha, 255)));
+      GLubyte(std::min(int(this->RedVal) + right.RedVal, 255)), GLubyte(std::min(int(this->GreenVal) + right.GreenVal, 255)),
+      GLubyte(std::min(int(this->BlueVal) + right.BlueVal, 255)), GLubyte(std::min(int(this->AlphaVal) + right.AlphaVal, 255)));
 
-  this->Red = temp.Red;
-  this->Green = temp.Green;
-  this->Blue = temp.Blue;
-  this->Alpha = temp.Alpha;
+  this->RedVal = temp.RedVal;
+  this->GreenVal = temp.GreenVal;
+  this->BlueVal = temp.BlueVal;
+  this->AlphaVal = temp.AlphaVal;
 
   return *this;
 }
 
 Color& Color::operator-=(const Color& right) {
   Color temp = Color(
-      GLubyte(std::max(int_t(this->Red) - right.Red, 0)), GLubyte(std::max(int_t(this->Green) - right.Green, 0)),
-      GLubyte(std::max(int_t(this->Blue) - right.Blue, 0)), GLubyte(std::max(int_t(this->Alpha) - right.Alpha, 0)));
+      GLubyte(std::max(int(this->RedVal) - right.RedVal, 0)), GLubyte(std::max(int(this->GreenVal) - right.GreenVal, 0)),
+      GLubyte(std::max(int(this->BlueVal) - right.BlueVal, 0)), GLubyte(std::max(int(this->AlphaVal) - right.AlphaVal, 0)));
 
-  this->Red = temp.Red;
-  this->Green = temp.Green;
-  this->Blue = temp.Blue;
-  this->Alpha = temp.Alpha;
+  this->RedVal = temp.RedVal;
+  this->GreenVal = temp.GreenVal;
+  this->BlueVal = temp.BlueVal;
+  this->AlphaVal = temp.AlphaVal;
 
   return *this;
 }
 
 Color& Color::operator*=(const Color& right) {
-  Color temp = Color(GLubyte(int_t(this->Red) * right.Red / 255), GLubyte(int_t(this->Green) * right.Green / 255),
-                     GLubyte(int_t(this->Blue) * right.Blue / 255), GLubyte(int_t(this->Alpha) * right.Alpha / 255));
+  Color temp = Color(GLubyte(int(this->RedVal) * right.RedVal / 255), GLubyte(int(this->GreenVal) * right.GreenVal / 255),
+                     GLubyte(int(this->BlueVal) * right.BlueVal / 255), GLubyte(int(this->AlphaVal) * right.AlphaVal / 255));
 
-  this->Red = temp.Red;
-  this->Green = temp.Green;
-  this->Blue = temp.Blue;
-  this->Alpha = temp.Alpha;
+  this->RedVal = temp.RedVal;
+  this->GreenVal = temp.GreenVal;
+  this->BlueVal = temp.BlueVal;
+  this->AlphaVal = temp.AlphaVal;
 
   return *this;
 }

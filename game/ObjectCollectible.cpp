@@ -2,7 +2,7 @@
 
 #include "ResourceManager.hpp"
 
-Instance ObjectCollectible::Create(Transformation<float_type> t) {
+Instance ObjectCollectible::Create(Transformation<float> t) {
   Instance inst(new ObjectCollectible());
   inst->SetSprite(ResourceManager::GetSprite("collectible"));
 
@@ -22,10 +22,10 @@ Instance ObjectCollectible::Create(Transformation<float_type> t) {
 
 ObjectCollectible::ObjectCollectible() {}
 
-void ObjectCollectible::PostCollision(float_type dt) {}
+void ObjectCollectible::PostCollision(float dt) {}
 
 void ObjectCollectible::Collision(CollisionInfo collision) {}
 
-void ObjectCollectible::Draw(BatchRenderer* renderer, View& view) { Object::Draw(renderer, view); }
+void ObjectCollectible::Draw(BatchRenderer* renderer) { Object::Draw(renderer); }
 
-void ObjectCollectible::DrawGUI(BatchRenderer* renderer, View& view) {}
+void ObjectCollectible::DrawGUI(BatchRenderer* renderer) {}

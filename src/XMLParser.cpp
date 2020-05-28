@@ -2,36 +2,36 @@
 #include "FileUtil.hpp"
 #include "Logger.hpp"
 
-float_type XMLAttrBase::GetFloat() {
+float XMLAttrBase::GetFloat() {
   PrintMessage("ERROR::XMLPARSER: Invalid attribute type \"float\"");
   throw std::runtime_error("Invalid attribute type");
 }
 
-uint_t XMLAttrBase::GetUnsigned() {
+unsigned XMLAttrBase::GetUnsigned() {
   PrintMessage("ERROR::XMLPARSER: Invalid attribute type \"unsigned\"");
   throw std::runtime_error("Invalid attribute type");
 }
 
-int_t XMLAttrBase::GetInt() {
+int XMLAttrBase::GetInt() {
   PrintMessage("ERROR::XMLPARSER: Invalid attribute type \"int\"");
   throw std::runtime_error("Invalid attribute type");
 }
 
-string_t XMLAttrBase::GetString() {
+std::string XMLAttrBase::GetString() {
   PrintMessage("ERROR::XMLPARSER: Invalid attribute type \"string\"");
   throw std::runtime_error("Invalid attribute type");
 }
 
-XMLTag::XMLTag(string_t name) : _name(name) {}
+XMLTag::XMLTag(std::string name) : _name(name) {}
 
 void XMLTag::AddChild(tagPtr child) {
   if (Child.find(child->_name) == std::end(Child))
-    Child.emplace(child->_name, vector_t<tagPtr>{child});
+    Child.emplace(child->_name, std::vector<tagPtr>{child});
   else
     Child.at(child->_name).push_back(child);
 }
 
-bool_t XMLParser::Open(const char_t* fileName) {
+bool XMLParser::Open(const char* fileName) {
   doc.Parse(FileRead(fileName));
 
   if (doc.ErrorID() == 0) {
@@ -53,29 +53,29 @@ void XMLParser::Parse() {
 
 void XMLParser::recParse(const tinyxml2::XMLElement* element, tagPtr parentTag) {
   for (const tinyxml2::XMLAttribute* attr = element->FirstAttribute(); attr != nullptr; attr = attr->Next()) {
-    string_t attrName = attr->Name();
-    string_t attrValStr = attr->Value();
+    std::string attrName = attr->Name();
+    std::string attrValStr = attr->Value();
     Type attrType = getType(attrValStr);
     attrPtr attrValue;
 
     switch (attrType) {
       case Type::STRING: {
-        attrValue = attrPtr(new XMLAttr<string_t>(attr->Value()));
+        attrValue = attrPtr(new XMLAttr<std::string>(attr->Value()));
         break;
       }
 
       case Type::FLOAT: {
-        attrValue = attrPtr(new XMLAttr<float_type>(attr->FloatValue()));
+        attrValue = attrPtr(new XMLAttr<float>(attr->FloatValue()));
         break;
       }
 
       case Type::INT: {
-        attrValue = attrPtr(new XMLAttr<int_t>(attr->IntValue()));
+        attrValue = attrPtr(new XMLAttr<int>(attr->IntValue()));
         break;
       }
 
       case Type::UNSIGNED: {
-        attrValue = attrPtr(new XMLAttr<uint_t>(attr->UnsignedValue()));
+        attrValue = attrPtr(new XMLAttr<unsigned>(attr->UnsignedValue()));
         break;
       }
     }
@@ -91,14 +91,14 @@ void XMLParser::recParse(const tinyxml2::XMLElement* element, tagPtr parentTag) 
   }
 }
 
-Type XMLParser::getType(string_t str) {
-  bool_t hasSign = false;
-  bool_t hasDec = false;
-  bool_t hasAlpha = (str.find_first_of("ABCDEFGHIJKLMNOPQRTSUVWXYZabcdefghijklmnopqrstuvwxyz,") != string_t::npos);
+Type XMLParser::getType(std::string str) {
+  bool hasSign = false;
+  bool hasDec = false;
+  bool hasAlpha = (str.find_first_of("ABCDEFGHIJKLMNOPQRTSUVWXYZabcdefghijklmnopqrstuvwxyz,") != std::string::npos);
 
   if (hasAlpha) return Type::STRING;
 
-  for (char_t c : str) {
+  for (char c : str) {
     if (c == '-') hasSign = true;
 
     if (c == '.') hasDec = true;

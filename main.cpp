@@ -52,8 +52,10 @@ int main(int argc, char* argv[]) {
   SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, GL_MAJOR);
   SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, GL_MINOR);
   #ifndef _WIN32
-  SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_ES);
+  SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
   #endif
+  SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
+  SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 8);
 
 
   SDL_Window* window = SDL_CreateWindow("GAYM", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, WINDOW_FLAGS);
@@ -139,7 +141,7 @@ int main(int argc, char* argv[]) {
         case SDL_WINDOWEVENT: {
           switch (e.window.event) {
             case SDL_WINDOWEVENT_SIZE_CHANGED: {
-              Game::SetWindowSize(ENGINE::Vector2<int_t>(e.window.data1, e.window.data2));
+              Game::SetWindowSize(Vec2i(e.window.data1, e.window.data2));
               break;
             }
             break;

@@ -15,33 +15,38 @@ static std::map<unsigned, unsigned> InstanceMax;
 
 class Object : public Transformable {
  public:
-  static Instance Create(Transformation<float_type> t);
-  virtual void PostCollision(float_type dt) = 0;
+  static Instance Create(Transformation<float> t);
+  virtual void PostCollision(float dt) = 0;
   virtual void Collision(CollisionInfo collision){};
-  virtual void Draw(BatchRenderer* _renderer, View& view);
-  virtual void DrawGUI(BatchRenderer* _renderer, View& view) = 0;
-  void SetMask(const Mask& _mask);
+  virtual void Draw(BatchRenderer* _renderer);
+  virtual void DrawGUI(BatchRenderer* _renderer) = 0;
+  void SetMask(int id, const Mask& _mask);
   void SetSprite(const Sprite& _sprite);
-  Mask& GetMask();
+  void AddMask(const Mask& mask) { _mask.push_back(mask); }
+  Mask& GetMask(int id);
+  std::vector<Mask>& GetMasks() { return _mask; }
+  size_t GetMaskCount() { return _mask.size(); }
   const Sprite& GetSprite() const;
-  void SetStatic(const bool_t& _isStatic);
-  const bool_t& IsStatic() const;
-  Crash2D::Collision GetCollision(Instance other);
+  void SetStatic(const bool& _isStatic);
+  const bool& IsStatic() const;
+  std::vector<Crash2D::Collision> GetCollision(Instance other);
   void AddCollision(CollisionInfo collision);
   void ClearCollisions();
+  float GetWidth();
+  float GetHeight();
 
-  float_type hSpeed = 0;
-  float_type vSpeed = 0;
+  float hSpeed = 0;
+  float vSpeed = 0;
 
-  Mask _mask;
+  std::vector<Mask> _mask;
 
-  int_t ID = -1;
+  int ID = -1;
 
  protected:
   Object(int type = -1) : _isStatic(true) { if (type >= 0) ID = InstanceMax[type]++; }
   Sprite _sprite;
   std::vector<CollisionInfo> _collisions;
-  bool_t _isStatic;
+  bool _isStatic;
 };
 
 #endif

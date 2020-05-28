@@ -13,28 +13,28 @@
 class ObjectHUD : public Object {
  public:
   virtual ~ObjectHUD() {}
-  static Instance Create(Transformation<float_type> t);
+  static Instance Create(Transformation<float> t);
   void Collision(CollisionInfo collision) override;
-  void PostCollision(float_type dt) override;
-  void Draw(BatchRenderer* _renderer, View& view) override;
-  void DrawGUI(BatchRenderer* _renderer, View& view) override;
+  void PostCollision(float dt) override;
+  void Draw(BatchRenderer* _renderer) override;
+  void DrawGUI(BatchRenderer* _renderer) override;
 
  protected:
   ObjectHUD();
 
-  uint_t _currentPlayer;
-  uint_t _playerTurn;
-  uint_t _numPlayers;
-  bool_t _donePlayerMoves;
-  bool_t _viewingMap;
-  vector_t<PlayerInfo> _players;
-  ubyte_t _startAlpha;
-  ubyte_t _endAlpha;
-  ENGINE::Vector2<int_t> _hudSize;
-  uint_t _hudSpacing;
-  map_t<string_t, KeyIcon> _keys;
+  unsigned _currentPlayer;
+  unsigned _playerTurn;
+  unsigned _numPlayers;
+  bool _donePlayerMoves;
+  bool _viewingMap;
+  std::vector<PlayerInfo> _players;
+  GLubyte _startAlpha;
+  GLubyte _endAlpha;
+  Vec2i _hudSize;
+  unsigned _hudSpacing;
+  std::map<std::string, KeyIcon> _keys;
   Wheel _wheel;
-  float_type _viewMapSpeed;
+  float _viewMapSpeed;
   Sprite _arrowSprite;
   Banner _banner[4];
 };

@@ -4,25 +4,25 @@
 #include "FileUtil.hpp"
 #include "Logger.hpp"
 
-bool_t Atlas::LoadXML(const char_t* xmlFile, bool_t alpha) {
+bool Atlas::LoadXML(const char* xmlFile, bool alpha) {
   try {
     XMLParser parser;
 
     if (!parser.Open(xmlFile)) return false;
 
-    string_t textureFile = parser.Root->Attr.at("fileName")->GetString();
+    std::string textureFile = parser.Root->Attr.at("fileName")->GetString();
     ResourceManager::LoadTexture(getResPath("/textures/" + textureFile).c_str(), alpha, textureFile);
     SetTexture(ResourceManager::GetTexture(textureFile));
 
     for (auto imageTag : parser.Root->Child.at("image")) {
-      string_t name = imageTag->Attr.at("fileName")->GetString();
+      std::string name = imageTag->Attr.at("fileName")->GetString();
 
-      uint_t x = imageTag->Attr.at("x")->GetUnsigned();
-      uint_t y = imageTag->Attr.at("y")->GetUnsigned();
-      uint_t w = imageTag->Attr.at("width")->GetUnsigned();
-      uint_t h = imageTag->Attr.at("height")->GetUnsigned();
+      unsigned x = imageTag->Attr.at("x")->GetUnsigned();
+      unsigned y = imageTag->Attr.at("y")->GetUnsigned();
+      unsigned w = imageTag->Attr.at("width")->GetUnsigned();
+      unsigned h = imageTag->Attr.at("height")->GetUnsigned();
 
-      TextureQuad t(ENGINE::Vector2<float_type>(x, y), ENGINE::Vector2<float_type>(w, h));
+      TextureQuad t(Vec2f(x, y), Vec2f(w, h));
 
       AddTextureQuad(name, t);
     }
@@ -34,14 +34,14 @@ bool_t Atlas::LoadXML(const char_t* xmlFile, bool_t alpha) {
   return true;
 }
 
-const ENGINE::Vector2<uint_t>& Atlas::GetSize() const { return _texture.GetSize(); }
+const Vec2u& Atlas::GetSize() const { return _texture.GetSize(); }
 
 void Atlas::Bind() { _texture.Bind(); }
 
 void Atlas::SetTexture(const Texture2D& _texture) { this->_texture = _texture; }
 
-void Atlas::AddTextureQuad(string_t name, const TextureQuad& quad) { _quads.emplace(name, quad); }
+void Atlas::AddTextureQuad(std::string name, const TextureQuad& quad) { _quads.emplace(name, quad); }
 
-const TextureQuad& Atlas::GetTextureQuad(string_t name) const { return _quads.at(name); }
+const TextureQuad& Atlas::GetTextureQuad(std::string name) const { return _quads.at(name); }
 
-const umap_t<string_t, TextureQuad>& Atlas::GetQuads() const { return _quads; }
+const std::unordered_map<std::string, TextureQuad>& Atlas::GetQuads() const { return _quads; }

@@ -5,21 +5,21 @@
 
 class Transformable {
  public:
-  const ENGINE::Vector2<float_type> &GetScale() const;
-  void SetScale(const ENGINE::Vector2<float_type> &s);
-  void Scale(const ENGINE::Vector2<float_type> &s);
-  const ENGINE::Vector2<float_type> &GetPivot() const;
-  void SetPivot(const ENGINE::Vector2<float_type> &p);
-  const float_type &GetRotation() const;
-  void SetRotation(const float_type &r);
-  void Rotate(const float_type &r);
-  const ENGINE::Vector2<float_type> &GetTranslation() const;
-  void SetTranslation(const ENGINE::Vector2<float_type> &t);
-  void Translate(const ENGINE::Vector2<float_type> &t);
-  Transformation<float_type> GetTransform();
+  const Vec2f &GetScale() const;
+  void SetScale(const Vec2f &s);
+  void Scale(const Vec2f &s);
+  const Vec2f &GetPivot() const;
+  void SetPivot(const Vec2f &p);
+  const float &GetRotation() const;
+  void SetRotation(const float &r);
+  void Rotate(const float &r);
+  const Vec2f &GetTranslation() const;
+  void SetTranslation(const Vec2f &t);
+  void Translate(const Vec2f &t);
+  Transformation<float> GetTransform();
 
  protected:
-  Transformation<float_type> _transform;
+  Transformation<float> _transform;
 };
 
 #endif

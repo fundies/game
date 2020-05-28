@@ -8,45 +8,45 @@
 
 class ConvexShape : public Transformable {
  public:
-  ConvexShape(uint_t vertexCount);
+  ConvexShape(unsigned vertexCount);
 
   void AddPoint(Vertex vertex);
-  void SetPoint(uint_t index, const Vertex& vertex);
+  void SetPoint(unsigned index, const Vertex& vertex);
 
-  void SetPointPosition(uint_t index, const ENGINE::Vector2<float_type>& pos);
-  void SetPointTexturePosition(uint_t index, const ENGINE::Vector2<float_type>& pos);
-  void SetPointColor(uint_t index, const Color& color);
+  void SetPointPosition(unsigned index, const Vec2f& pos);
+  void SetPointTexturePosition(unsigned index, const Vec2f& pos);
+  void SetPointColor(unsigned index, const Color& color);
 
   void SetColor(const Color& color);
 
-  const Vertex& GetPoint(uint_t index) const;
-  Vertex& GetPointM(uint_t index);
-  void SetPointCount(uint_t vertexCount);
-  const uint_t GetPointCount() const;
+  const Vertex& GetPoint(unsigned index) const;
+  Vertex& GetPointM(unsigned index);
+  void SetPointCount(unsigned vertexCount);
+  const unsigned GetPointCount() const;
 
-  const vector_t<Vertex>& GetVerts() const;
+  const std::vector<Vertex>& GetVerts() const;
 
   void CalcCenter();
-  bool_t AABB(ConvexShape& shape);
+  bool AABB(ConvexShape& shape);
 
-  const float_type& GetBottom() const;
-  const ENGINE::Vector2<float_type>& GetCenter() const;
-  const float_type& GetLeft() const;
-  const float_type& GetRight() const;
-  const float_type& GetTop() const;
-  const float_type GetWidth() const;
-  const float_type GetHeight() const;
+  const float& GetBottom() const;
+  const Vec2f& GetCenter() const;
+  const float& GetLeft() const;
+  const float& GetRight() const;
+  const float& GetTop() const;
+  const float GetWidth() const;
+  const float GetHeight() const;
 
-  const ENGINE::Vector2<float_type> GetTransformedPoint(uint_t index) const;
-  const ENGINE::Vector2<float_type> GetTransformedCenter() const;
+  const Vec2f GetTransformedPoint(unsigned index) const;
+  const Vec2f GetTransformedCenter() const;
 
  protected:
-  vector_t<Vertex> _verts;
-  ENGINE::Vector2<float_type> _center;
-  float_type _top;
-  float_type _left;
-  float_type _bottom;
-  float_type _right;
+  std::vector<Vertex> _verts;
+  Vec2f _center;
+  float _top;
+  float _left;
+  float _bottom;
+  float _right;
 };
 
 #endif

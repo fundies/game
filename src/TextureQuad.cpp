@@ -1,8 +1,8 @@
 #include "TextureQuad.hpp"
 
-TextureQuad::TextureQuad(ENGINE::Vector2<float_type> position, ENGINE::Vector2<float_type> size)
+TextureQuad::TextureQuad(Vec2f position, Vec2f size)
     : _position(position), _size(size) {}
 
-const ENGINE::Vector2<float_type>& TextureQuad::GetPosition() const { return _position; }
+const Vec2f& TextureQuad::GetPosition() const { return _position; }
 
-const ENGINE::Vector2<float_type>& TextureQuad::GetSize() const { return _size; }
+const Vec2f& TextureQuad::GetSize() const { return _size; }

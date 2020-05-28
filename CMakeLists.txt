@@ -29,7 +29,7 @@ file(GLOB CRASH2D_SOURCES "Crash2D/library/src/*.cpp")
 file(GLOB TMX_SOURCES "tmx/src/*.c")
 
 set(GLAD_SOURCES "${GLAD_DIR}/src/glad.c")
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 
 INCLUDE(FindPkgConfig)
 

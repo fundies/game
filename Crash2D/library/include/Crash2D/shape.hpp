@@ -286,6 +286,8 @@ public:
 		\return The projection of the circle onto the axis.
 	*/
 	virtual const Projection Project(const Shape &s, const Axis &a) const = 0;
+  
+  virtual const Precision_t GetRadius() const = 0;
 
 	//! Applies a transformation to this shape and returns a copy.
 	/*!
@@ -303,6 +305,8 @@ public:
 	/*!
 	*/
 	virtual Shape* Clone() = 0;
+  
+  bool IsCircle = false;
 
 };
 }

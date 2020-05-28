@@ -8,29 +8,29 @@ enum GameState { GAME_ACTIVE, GAME_MENU, GAME_PAUSE };
 
 class Game {
  public:
-  Game(uint_t width, uint_t height);
+  Game(unsigned width, unsigned height);
   ~Game();
   void Init();
-  void ProcessInput(float_type dt);
-  void Update(float_type dt);
+  void ProcessInput(float dt);
+  void Update(float dt);
   void Render();
-  //void SetHeight(const uint_t& _height);
-  static void SetKey(uint_t key, bool pressed);
+  //void SetHeight(const unsigned& _height);
+  static void SetKey(unsigned key, bool pressed);
   void SetRenderer(BatchRenderer* _renderer);
   void SetState(const GameState& _state);
-  //void SetWidth(const uint_t& _width);
-  //const uint_t& GetHeight() const;
+  //void SetWidth(const unsigned& _width);
+  //const unsigned& GetHeight() const;
   BatchRenderer* GetRenderer();
   const GameState& GetState() const;
-  //const uint_t& GetWidth() const;
+  //const unsigned& GetWidth() const;
 
-  static void SetWindowSize(const ENGINE::Vector2<int_t> _windowSize);
-  static const ENGINE::Vector2<int_t> GetWindowSize();
+  static void SetWindowSize(const Vec2i _windowSize);
+  static const Vec2i GetWindowSize();
 
  protected:
   GameState _state;
   BatchRenderer* _renderer;
-  static ENGINE::Vector2<int_t> _windowSize;
+  static Vec2i _windowSize;
 };
 
 #endif

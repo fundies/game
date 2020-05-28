@@ -9,22 +9,22 @@
 class Shader {
  public:
   Shader() {}
-  bool_t LoadShaderFile(const char_t* vShaderFile, const char_t* fShaderFile, const char_t* gShaderFile);
+  bool LoadShaderFile(const char* vShaderFile, const char* fShaderFile, const char* gShaderFile);
 
   Shader& Use();
-  void Compile(const char_t* vertexSource, const char_t* fragmentSource, const char_t* geometrySource = nullptr);
-  void SetFloat(const char_t* name, float_type value, bool_t useShader = false);
-  void SetInteger(const char_t* name, int_t value, bool_t useShader = false);
-  void SetVector2f(const char_t* name, float_type x, float_type y, bool_t useShader = false);
-  void SetVector3f(const char_t* name, float_type x, float_type y, float_type z, bool_t useShader = false);
-  void SetVector4f(const char_t* name, float_type x, float_type y, float_type z, float_type w,
-                   bool_t useShader = false);
+  void Compile(const char* vertexSource, const char* fragmentSource, const char* geometrySource = nullptr);
+  void SetFloat(const char* name, float value, bool useShader = false);
+  void SetInteger(const char* name, int value, bool useShader = false);
+  void SetVector2f(const char* name, float x, float y, bool useShader = false);
+  void SetVector3f(const char* name, float x, float y, float z, bool useShader = false);
+  void SetVector4f(const char* name, float x, float y, float z, float w,
+                   bool useShader = false);
   void    SetMatrix4(const GLchar *name, const glm::mat4 &matrix, GLboolean useShader = false);
-  const uint_t& GetID() const;
+  const unsigned& GetID() const;
 
  protected:
-  void checkCompileErrors(uint_t object, string_t type);
-  uint_t _ID;
+  void checkCompileErrors(unsigned object, std::string type);
+  unsigned _ID;
 };
 
 #endif

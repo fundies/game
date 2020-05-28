@@ -44,15 +44,15 @@ class Transformation {
 	*/
   void Scale(const ENGINE::Vector2<T> &s) { _scale *= s; }
 
-  //! Gets the pivot point_t used for rotation.
+  //! Gets the pivot point used for rotation.
   /*!
 		\return The rotation of this transformation.
 	*/
   const ENGINE::Vector2<T> &GetPivot() const { return _pivot; }
 
-  //! Sets the pivot point_t used for rotation.
+  //! Sets the pivot point used for rotation.
   /*!
-		\param p The new pivot point_t used for rotation..
+		\param p The new pivot point used for rotation..
 	*/
   void SetPivot(const ENGINE::Vector2<T> &p) { _pivot = p; }
 
@@ -113,7 +113,7 @@ class Transformation {
   ENGINE::Vector2<T> _scale;       /*!< The scale of the transformation. */
   T _rotation;                     /*!< The rotation of the transformation. */
   ENGINE::Vector2<T> _translation; /*!< The translation of the transformation. */
-  ENGINE::Vector2<T> _pivot;       /*!< The pivot point_t used for rotation of the transformation. */
+  ENGINE::Vector2<T> _pivot;       /*!< The pivot point used for rotation of the transformation. */
 };
 
 #endif

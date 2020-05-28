@@ -5,12 +5,12 @@
 #include <limits>
 #include <algorithm>
 
-ConvexShape::ConvexShape(uint_t vertexCount)
+ConvexShape::ConvexShape(unsigned vertexCount)
     : _verts(vertexCount),
-      _top(std::numeric_limits<float_type>::max()),
-      _left(std::numeric_limits<float_type>::max()),
-      _bottom(std::numeric_limits<float_type>::min()),
-      _right(std::numeric_limits<float_type>::min()) {}
+      _top(std::numeric_limits<float>::max()),
+      _left(std::numeric_limits<float>::max()),
+      _bottom(std::numeric_limits<float>::min()),
+      _right(std::numeric_limits<float>::min()) {}
 
 void ConvexShape::AddPoint(Vertex vertex) {
   _top = std::min(_top, vertex.GetPosition().y);
@@ -22,7 +22,7 @@ void ConvexShape::AddPoint(Vertex vertex) {
   _verts.push_back(vertex);
 }
 
-void ConvexShape::SetPointPosition(uint_t index, const ENGINE::Vector2<float_type>& pos) {
+void ConvexShape::SetPointPosition(unsigned index, const Vec2f& pos) {
   _top = std::min(_top, pos.y);
   _left = std::min(_left, pos.x);
 
@@ -31,13 +31,13 @@ void ConvexShape::SetPointPosition(uint_t index, const ENGINE::Vector2<float_typ
   _verts[index].SetPosition(pos);
 }
 
-void ConvexShape::SetPointTexturePosition(uint_t index, const ENGINE::Vector2<float_type>& pos) {
+void ConvexShape::SetPointTexturePosition(unsigned index, const Vec2f& pos) {
   _verts[index].SetTexturePos(pos);
 }
 
-void ConvexShape::SetPointColor(uint_t index, const Color& color) { _verts[index].SetColor(color); }
+void ConvexShape::SetPointColor(unsigned index, const Color& color) { _verts[index].SetColor(color); }
 
-void ConvexShape::SetPoint(uint_t index, const Vertex& vertex) {
+void ConvexShape::SetPoint(unsigned index, const Vertex& vertex) {
   _top = std::min(_top, vertex.GetPosition().y);
   _left = std::min(_left, vertex.GetPosition().x);
 
@@ -47,25 +47,25 @@ void ConvexShape::SetPoint(uint_t index, const Vertex& vertex) {
   _verts[0] = vertex;
 }
 
-const Vertex& ConvexShape::GetPoint(uint_t index) const { return _verts[index]; }
+const Vertex& ConvexShape::GetPoint(unsigned index) const { return _verts[index]; }
 
-Vertex& ConvexShape::GetPointM(uint_t index) { return _verts[index]; }
+Vertex& ConvexShape::GetPointM(unsigned index) { return _verts[index]; }
 
-void ConvexShape::SetPointCount(uint_t vertexCount) { _verts.resize(vertexCount); }
+void ConvexShape::SetPointCount(unsigned vertexCount) { _verts.resize(vertexCount); }
 
-const uint_t ConvexShape::GetPointCount() const { return _verts.size(); }
+const unsigned ConvexShape::GetPointCount() const { return _verts.size(); }
 
-const vector_t<Vertex>& ConvexShape::GetVerts() const { return _verts; }
+const std::vector<Vertex>& ConvexShape::GetVerts() const { return _verts; }
 
 void ConvexShape::CalcCenter() {
-  _center = ENGINE::Vector2<float_type>(0, 0);
+  _center = Vec2f(0, 0);
 
-  for (uint_t i = 0; i < _verts.size(); i++) _center += _verts[i].GetPosition();
+  for (unsigned i = 0; i < _verts.size(); i++) _center += _verts[i].GetPosition();
 
-  _center = ENGINE::Vector2<float_type>(_center.x / _verts.size(), _center.y / _verts.size());
+  _center = Vec2f(_center.x / _verts.size(), _center.y / _verts.size());
 }
 
-bool_t ConvexShape::AABB(ConvexShape& shape) {
+bool ConvexShape::AABB(ConvexShape& shape) {
   if (shape._right < _left || shape._left > _right) return false;
 
   if (shape._bottom < _top || shape._top > _bottom) return false;
@@ -73,15 +73,15 @@ bool_t ConvexShape::AABB(ConvexShape& shape) {
   return true;
 }
 
-const float_type& ConvexShape::GetBottom() const { return _bottom; }
-const ENGINE::Vector2<float_type>& ConvexShape::GetCenter() const { return _center; }
-const float_type& ConvexShape::GetLeft() const { return _left; }
-const float_type& ConvexShape::GetRight() const { return _right; }
-const float_type& ConvexShape::GetTop() const { return _top; }
+const float& ConvexShape::GetBottom() const { return _bottom; }
+const Vec2f& ConvexShape::GetCenter() const { return _center; }
+const float& ConvexShape::GetLeft() const { return _left; }
+const float& ConvexShape::GetRight() const { return _right; }
+const float& ConvexShape::GetTop() const { return _top; }
 
-const float_type ConvexShape::GetWidth() const { return std::abs(_right - _left); }
+const float ConvexShape::GetWidth() const { return std::abs(_right - _left); }
 
-const float_type ConvexShape::GetHeight() const { return std::abs(_bottom - _top); }
+const float ConvexShape::GetHeight() const { return std::abs(_bottom - _top); }
 
 void ConvexShape::SetColor(const Color& color) {
   for (auto& vert : _verts) {
@@ -89,8 +89,8 @@ void ConvexShape::SetColor(const Color& color) {
   }
 }
 
-const ENGINE::Vector2<float_type> ConvexShape::GetTransformedPoint(uint_t index) const {
-  ENGINE::Vector2<float_type> pt = GetPoint(index).GetPosition();
+const Vec2f ConvexShape::GetTransformedPoint(unsigned index) const {
+  Vec2f pt = GetPoint(index).GetPosition();
 
   // Scale
   pt -= _transform.GetPivot();
@@ -98,16 +98,16 @@ const ENGINE::Vector2<float_type> ConvexShape::GetTransformedPoint(uint_t index)
   pt += _transform.GetPivot();
 
   // Rotate
-  const float_type radians = (_transform.GetRotation() * M_PI) / 180;
-  const float_type s = std::sin(radians);
-  const float_type c = std::cos(radians);
+  const float radians = (_transform.GetRotation() * M_PI) / 180;
+  const float s = std::sin(radians);
+  const float c = std::cos(radians);
 
-  ENGINE::Vector2<float_type> p = pt - _transform.GetPivot();
+  Vec2f p = pt - _transform.GetPivot();
 
-  const float_type nx = (p.x * c) - (p.y * s);
-  const float_type ny = (p.x * s) + (p.y * c);
+  const float nx = (p.x * c) - (p.y * s);
+  const float ny = (p.x * s) + (p.y * c);
 
-  p = ENGINE::Vector2<float_type>(nx, ny) + _transform.GetPivot();
+  p = Vec2f(nx, ny) + _transform.GetPivot();
 
   // Translate
   p += _transform.GetTranslation();
@@ -115,8 +115,8 @@ const ENGINE::Vector2<float_type> ConvexShape::GetTransformedPoint(uint_t index)
   return p;
 }
 
-const ENGINE::Vector2<float_type> ConvexShape::GetTransformedCenter() const {
-  ENGINE::Vector2<float_type> pt = GetCenter();
+const Vec2f ConvexShape::GetTransformedCenter() const {
+  Vec2f pt = GetCenter();
 
   // Scale
   pt -= _transform.GetPivot();
@@ -124,16 +124,16 @@ const ENGINE::Vector2<float_type> ConvexShape::GetTransformedCenter() const {
   pt += _transform.GetPivot();
 
   // Rotate
-  const float_type radians = (_transform.GetRotation() * M_PI) / 180;
-  const float_type s = std::sin(radians);
-  const float_type c = std::cos(radians);
+  const float radians = (_transform.GetRotation() * M_PI) / 180;
+  const float s = std::sin(radians);
+  const float c = std::cos(radians);
 
-  ENGINE::Vector2<float_type> p = pt - _transform.GetPivot();
+  Vec2f p = pt - _transform.GetPivot();
 
-  const float_type nx = (p.x * c) - (p.y * s);
-  const float_type ny = (p.x * s) + (p.y * c);
+  const float nx = (p.x * c) - (p.y * s);
+  const float ny = (p.x * s) + (p.y * c);
 
-  p = ENGINE::Vector2<float_type>(nx, ny) + _transform.GetPivot();
+  p = Vec2f(nx, ny) + _transform.GetPivot();
 
   // Translate
   p += _transform.GetTranslation();

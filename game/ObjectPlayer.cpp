@@ -1,6 +1,8 @@
 #include "ObjectPlayer.hpp"
 
-Instance ObjectPlayer::Create(Transformation<float_type> t) {
+using Vec2 = Vec2f;
+
+Instance ObjectPlayer::Create(Transformation<float> t) {
   Instance inst(new ObjectPlayer());
   inst->SetSprite(ResourceManager::GetSprite("mask_greg"));
 
@@ -16,7 +18,7 @@ Instance ObjectPlayer::Create(Transformation<float_type> t) {
 
   mask.Transform();
 
-  inst->SetMask(mask);
+  inst->AddMask(mask);
 
   return inst;
 }
@@ -49,16 +51,16 @@ float ObjectPlayer::GetHspeedFactor(float spd) {
   return spd - ((platformSlope/2) * spd * platformMask.GetScale().x * sgn(hSpeed));
 }
 
-void ObjectPlayer::PostCollision(float_type dt) {
-  SetTranslation(_mask.GetTranslation());
+void ObjectPlayer::PostCollision(float dt) {
+  SetTranslation(_mask[0].GetTranslation() - Vec2(0, GetSprite().GetHeight() - _mask[0].Height()));
 
   int hdir = 0;
   if (ID == 0)
     hdir = Input::ButtonHeld(GameControl::Right) - Input::ButtonHeld(GameControl::Left);
  
   // Horizontal Movement
-  float_type currHorrizontalAccel = (isJumping || isFalling) ? horAccelInAir : GetHspeedFactor(horAccel);
-  float_type currMaxHspeed = GetHspeedFactor(maxHspeed);
+  float currHorrizontalAccel = (isJumping || isFalling) ? horAccelInAir : GetHspeedFactor(horAccel);
+  float currMaxHspeed = GetHspeedFactor(maxHspeed);
 
   if (hdir != 0 && std::abs(hSpeed) < currMaxHspeed)
     hSpeed += hdir * currHorrizontalAccel;
@@ -68,6 +70,8 @@ void ObjectPlayer::PostCollision(float_type dt) {
     else
       hSpeed -= sgn(hSpeed) * GetHspeedFactor(defaultFriction);
   }
+  
+  //hSpeed = hdir * 8;
 
   // Vertical Movement
   if (_collisions.size() == 0) isFalling = true;
@@ -77,7 +81,7 @@ void ObjectPlayer::PostCollision(float_type dt) {
   if (!Input::ButtonHeld(GameControl::A)) isJumping = false;
 
   if (!isFalling && !isJumping && platformSlope != 0) {
-    if ((_mask.Bottom - 100) < platformMask.Top) vSpeed = -platformSlope * hSpeed * platformMask.GetScale().x;
+    if ((_mask[0].Bottom - 100) < platformMask.Top) vSpeed = -platformSlope * hSpeed * platformMask.GetScale().x;
   }
 
   if (isJumping) {
@@ -92,21 +96,21 @@ void ObjectPlayer::PostCollision(float_type dt) {
     }
   }
 
-  if (isFalling) {
+  else if (isFalling) {
     platformSlope = 0;
     canJump = false;
     vSpeed += fallAcceleration;
     vSpeed = std::min(vSpeed, maxFallSpeed);
-  }
+  } else vSpeed = 0;
 }
 
 void ObjectPlayer::Collision(CollisionInfo collision) {
   if (auto p = dynamic_cast<ObjectPlatform*>(collision.instance.get())) {
     platformSlope = p->slope;
-    platformMask = p->GetMask();
+    platformMask = p->GetMask(0);
   }
 
-  ENGINE::Vector2<float> t(collision.GetDisplacement().x, collision.GetDisplacement().y);
+  Vec2f t(collision.GetDisplacement().x, collision.GetDisplacement().y);
 
   if (platformSlope != 0) {
     if (std::abs(t.x) < 0.25) t.x = 0;
@@ -114,8 +118,8 @@ void ObjectPlayer::Collision(CollisionInfo collision) {
     if (std::abs(t.y) < 0.25) t.y = 0;
   }
 
-  _mask.Translate(-t);
-  _mask.Transform();
+  _mask[0].Translate(-t);
+  _mask[0].Transform();
 
   if (t.y != 0) {
     if (t.y > 0) {
@@ -132,8 +136,12 @@ void ObjectPlayer::Collision(CollisionInfo collision) {
   }
 }
 
-void ObjectPlayer::Draw(BatchRenderer* renderer, View& view) { Object::Draw(renderer, view); }
+void ObjectPlayer::Draw(BatchRenderer* renderer) { 
+  Object::Draw(renderer);
+  renderer->DrawLine(GetTranslation(), GetTranslation() + Vec2(100, 0), Color::Red());
+  //renderer->DrawCircle(Vec2(GetTranslation().x + GetWidth()/2, GetTranslation().y + GetHeight() - 30), 30);
+}
 
-void ObjectPlayer::DrawGUI(BatchRenderer* renderer, View& view) {
-  //Object::DrawGUI(renderer, view);
+void ObjectPlayer::DrawGUI(BatchRenderer* renderer) {
+  //Object::DrawGUI(renderer);
 }

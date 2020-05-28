@@ -1,6 +1,6 @@
 #include "Drawable.hpp"
 
-Drawable::Drawable(std::initializer_list<Vertex> verticies, Transformation<float_type> transform)
+Drawable::Drawable(std::initializer_list<Vertex> verticies, Transformation<float> transform)
     : _vertices(verticies)  //, _transform(transform), _texture(texture)
 {}
 
@@ -8,13 +8,13 @@ Vertex& Drawable::GetCenter() { return _center; }
 
 void Drawable::SetCenter(Vertex center) { _center = center; }
 
-Vertex& Drawable::GetVertex(uint_t index) { return _vertices[index]; }
+Vertex& Drawable::GetVertex(unsigned index) { return _vertices[index]; }
 
-void Drawable::SetVertex(uint_t index, Vertex vertex) { _vertices[index] = vertex; }
+void Drawable::SetVertex(unsigned index, Vertex vertex) { _vertices[index] = vertex; }
 
-uint_t Drawable::GetVertexCount() { return _vertices.size(); }
+unsigned Drawable::GetVertexCount() { return _vertices.size(); }
 
-void Drawable::SetVertexCount(uint_t count) { _vertices.resize(count); }
+void Drawable::SetVertexCount(unsigned count) { _vertices.resize(count); }
 
 //Texture2D& Drawable::GetTexture();
 //void Drawable::SetTexture(Texture2D& texture);

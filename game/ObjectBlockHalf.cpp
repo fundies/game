@@ -2,7 +2,7 @@
 
 #include "ResourceManager.hpp"
 
-Instance ObjectBlockHalf::Create(Transformation<float_type> t) {
+Instance ObjectBlockHalf::Create(Transformation<float> t) {
   Instance inst(new ObjectBlockHalf());
   inst->SetSprite(ResourceManager::GetSprite("block half"));
 
@@ -18,17 +18,17 @@ Instance ObjectBlockHalf::Create(Transformation<float_type> t) {
 
   mask.Transform();
 
-  inst->SetMask(mask);
+  inst->AddMask(mask);
 
   return inst;
 }
 
 ObjectBlockHalf::ObjectBlockHalf() {}
 
-void ObjectBlockHalf::PostCollision(float_type dt) {}
+void ObjectBlockHalf::PostCollision(float dt) {}
 
 void ObjectBlockHalf::Collision(CollisionInfo collision) {}
 
-void ObjectBlockHalf::Draw(BatchRenderer* renderer, View& view) { Object::Draw(renderer, view); }
+void ObjectBlockHalf::Draw(BatchRenderer* renderer) { Object::Draw(renderer); }
 
-void ObjectBlockHalf::DrawGUI(BatchRenderer* renderer, View& view) {}
+void ObjectBlockHalf::DrawGUI(BatchRenderer* renderer) {}

@@ -11,10 +11,12 @@ namespace Crash2D
 {
 Circle::Circle() : ShapeImpl(Vector2(0, 0)), _radius(0)
 {
+  IsCircle = true;
 }
 
 Circle::Circle(const Vector2 c, const Precision_t r) : ShapeImpl(c), _radius(r)
 {
+  IsCircle = true;
 }
 
 const Projection Circle::Project(const Shape &s, const Axis &a) const
@@ -25,11 +27,6 @@ const Projection Circle::Project(const Shape &s, const Axis &a) const
 void Circle::SetRadius(const Precision_t r)
 {
 	_radius = r;
-}
-
-const Precision_t& Circle::GetRadius() const
-{
-	return _radius;
 }
 
 const Projection Circle::Project(const Axis &a) const

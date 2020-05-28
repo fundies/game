@@ -36,7 +36,7 @@ public:
 	/*!
 		\return The radius of this circle.
 	*/
-	virtual const Precision_t& GetRadius() const;
+  virtual const Precision_t GetRadius() const override { return _radius; }
 
 	//! Projects the circle onto the given axis and returns the projection.
 	/*!

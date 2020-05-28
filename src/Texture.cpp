@@ -7,11 +7,11 @@
 
 Texture2D::Texture2D() : _size(0, 0) { glGenTextures(1, &_ID); }
 
-bool_t Texture2D::LoadImage(const char_t* imageFile, bool_t hasAlpha) {
+bool Texture2D::LoadImage(const char* imageFile, bool hasAlpha) {
   try {
     SDL_Surface* img = IMG_Load(imageFile);
 
-    _size = ENGINE::Vector2<uint_t>(img->w, img->h);
+    _size = Vec2u(img->w, img->h);
 
     glBindTexture(GL_TEXTURE_2D, _ID);
     //glObjectLabel(GL_TEXTURE, _ID, -1, std::to_string(ResourceManager::Textures.size()).c_str());
@@ -19,8 +19,9 @@ bool_t Texture2D::LoadImage(const char_t* imageFile, bool_t hasAlpha) {
                  GL_UNSIGNED_BYTE, img->pixels);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glGenerateMipmap(GL_TEXTURE_2D);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glBindTexture(GL_TEXTURE_2D, 0);
 
     SDL_FreeSurface(img);
@@ -34,5 +35,5 @@ bool_t Texture2D::LoadImage(const char_t* imageFile, bool_t hasAlpha) {
 
 void Texture2D::Bind() const { glBindTexture(GL_TEXTURE_2D, _ID); }
 
-const uint_t& Texture2D::GetID() const { return _ID; }
-const ENGINE::Vector2<uint_t>& Texture2D::GetSize() const { return _size; }
+const unsigned& Texture2D::GetID() const { return _ID; }
+const Vec2u& Texture2D::GetSize() const { return _size; }

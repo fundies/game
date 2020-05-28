@@ -2,7 +2,7 @@
 
 #include "ResourceManager.hpp"
 
-Instance ObjectHill2::Create(Transformation<float_type> t) {
+Instance ObjectHill2::Create(Transformation<float> t) {
   Instance inst(new ObjectHill2());
   inst->SetSprite(ResourceManager::GetSprite("hill_2"));
 
@@ -18,17 +18,17 @@ Instance ObjectHill2::Create(Transformation<float_type> t) {
   mask.SetRotation(t.GetRotation());
   mask.Transform();
 
-  inst->SetMask(mask);
+  inst->AddMask(mask);
 
   return inst;
 }
 
 ObjectHill2::ObjectHill2() {}
 
-void ObjectHill2::PostCollision(float_type dt) {}
+void ObjectHill2::PostCollision(float dt) {}
 
 void ObjectHill2::Collision(CollisionInfo collision) {}
 
-void ObjectHill2::Draw(BatchRenderer* renderer, View& view) { Object::Draw(renderer, view); }
+void ObjectHill2::Draw(BatchRenderer* renderer) { Object::Draw(renderer); }
 
-void ObjectHill2::DrawGUI(BatchRenderer* renderer, View& view) {}
+void ObjectHill2::DrawGUI(BatchRenderer* renderer) {}

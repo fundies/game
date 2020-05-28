@@ -74,6 +74,8 @@ public:
 		\param b Shape b;
 	*/
 	virtual const Vector2 CalcDisplacement(const AxesVec &axes, const Shape &a, const Shape &b) const;
+  
+  virtual const Precision_t GetRadius() const { return 0; }
 	
 
 	//! Applies a transformation to this shape..

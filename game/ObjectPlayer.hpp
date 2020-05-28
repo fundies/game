@@ -8,11 +8,11 @@
 class ObjectPlayer : public Object {
  public:
   virtual ~ObjectPlayer() {}
-  static Instance Create(Transformation<float_type> t);
-  void PostCollision(float_type dt) override;
+  static Instance Create(Transformation<float> t);
+  void PostCollision(float dt) override;
   void Collision(CollisionInfo collision) override;
-  void Draw(BatchRenderer* renderer, View& view) override;
-  void DrawGUI(BatchRenderer* renderer, View& view) override;
+  void Draw(BatchRenderer* renderer) override;
+  void DrawGUI(BatchRenderer* renderer) override;
 
  protected:
   ObjectPlayer();
@@ -23,22 +23,22 @@ class ObjectPlayer : public Object {
   float GetHspeedFactor(float spd);
 
  private:
-  //float_type vSpeed;
-  const float_type ladderClimbSpeed;
-  const float_type jumpAccel;
-  const float_type maxJumpSpeed;
-  const float_type maxFallSpeed;
-  const float_type fallAcceleration;
-  const float_type trampolineMultiplier;
-  float_type platformVspeed;
+  //float vSpeed;
+  const float ladderClimbSpeed;
+  const float jumpAccel;
+  const float maxJumpSpeed;
+  const float maxFallSpeed;
+  const float fallAcceleration;
+  const float trampolineMultiplier;
+  float platformVspeed;
 
-  //float_type hSpeed;
-  const float_type defaultFriction;
-  float_type horAccel;
-  const float_type horAccelOnPlatform;
-  const float_type horAccelInAir;
-  float_type maxHspeed;
-  float_type platformHspeed;
+  //float hSpeed;
+  const float defaultFriction;
+  float horAccel;
+  const float horAccelOnPlatform;
+  const float horAccelInAir;
+  float maxHspeed;
+  float platformHspeed;
 
   bool isFalling;
   bool isJumping;

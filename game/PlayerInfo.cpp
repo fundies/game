@@ -19,14 +19,14 @@ void PlayerInfo::SetMapIcon(const Sprite& _mapIcon) { this->_mapIcon = _mapIcon;
 
 Sprite& PlayerInfo::GetMapIcon() { return _mapIcon; }
 
-bool_t PlayerInfo::SetMapPosition(MapPath* _mapPosition) {
+bool PlayerInfo::SetMapPosition(MapPath* _mapPosition) {
   if (_mapPosition != nullptr) this->_mapPosition = _mapPosition;
 
   return (_mapPosition != nullptr);
 }
 const MapPath* PlayerInfo::GetMapPosition() const { return _mapPosition; }
 
-const ENGINE::Vector2<int_t>& PlayerInfo::GetBoardPosition() const { return _mapPosition->position; }
+const Vec2i& PlayerInfo::GetBoardPosition() const { return _mapPosition->position; }
 
 void PlayerInfo::MoveSpace(MapDirection direction) {
   switch (direction) {
@@ -96,8 +96,8 @@ void PlayerInfo::MoveSpace(MapDirection direction) {
   }
 }
 
-void PlayerInfo::SetNumberOfMoves(const uint_t& _numberOfMoves) { this->_numberOfMoves = _numberOfMoves; }
-const uint_t& PlayerInfo::GetNumberOfMoves() const { return _numberOfMoves; }
+void PlayerInfo::SetNumberOfMoves(const unsigned& _numberOfMoves) { this->_numberOfMoves = _numberOfMoves; }
+const unsigned& PlayerInfo::GetNumberOfMoves() const { return _numberOfMoves; }
 
 void PlayerInfo::UndoMoves() {
   while (!_previousMoves.empty()) {
