@@ -1,7 +1,5 @@
 #include "ObjectPlayer.hpp"
 
-using Vec2 = Vec2f;
-
 Instance ObjectPlayer::Create(Transformation<float> t) {
   Instance inst(new ObjectPlayer());
   inst->SetSprite(ResourceManager::GetSprite("mask_greg"));
@@ -52,7 +50,7 @@ float ObjectPlayer::GetHspeedFactor(float spd) {
 }
 
 void ObjectPlayer::PostCollision(float dt) {
-  SetTranslation(_mask[0].GetTranslation() - Vec2(0, GetSprite().GetHeight() - _mask[0].Height()));
+  SetTranslation(_mask[0].GetTranslation() - Vec2f(0, GetSprite().GetHeight() - _mask[0].Height()));
 
   int hdir = 0;
   if (ID == 0)
@@ -138,7 +136,7 @@ void ObjectPlayer::Collision(CollisionInfo collision) {
 
 void ObjectPlayer::Draw(BatchRenderer* renderer) { 
   Object::Draw(renderer);
-  renderer->DrawLine(GetTranslation(), GetTranslation() + Vec2(100, 0), Color::Red());
+  renderer->DrawLine(GetTranslation() + Vec2f(GetWidth()/2, GetHeight()), GetTranslation() + Vec2f(GetWidth()/2, GetHeight() - 50), Color::Blue());
   //renderer->DrawCircle(Vec2(GetTranslation().x + GetWidth()/2, GetTranslation().y + GetHeight() - 30), 30);
 }
 

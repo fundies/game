@@ -47,8 +47,8 @@ void BatchRenderer::DrawLine(Vec2f a, Vec2f b, Color color) {
   ConvexShape line(4);
   line.SetPointPosition(0, a);
   line.SetPointPosition(1, b);
-  line.SetPointPosition(2, b + Vec2f(0, 4));
-  line.SetPointPosition(3, a + Vec2f(0, 4));
+  line.SetPointPosition(2, b + Vec2f(2, 2));
+  line.SetPointPosition(3, a + Vec2f(2, 2));
   
   for (size_t i = 0; i < 4; ++i)
     line.SetColor(color);
@@ -71,13 +71,12 @@ void BatchRenderer::DrawCircle(Vec2f pos, float radius, Color color, size_t poin
 
 void BatchRenderer::PushVert(const GPUvert& v) {
   // Add Vertex to vertex buffer if unique and store position in index buffer
-  auto it = std::find(std::begin(_coords), std::end(_coords), v);
-  if (it == _coords.end()) {
-    _coords.push_back(v);
-    _indexBuffer.push_back(_coords.size() - 1);
-  } else {
-    _indexBuffer.push_back(std::distance(_coords.begin(), it));
+  auto inserted = _coordMap.try_emplace(v, _coords.size());
+  if (inserted.second == true) {
+    _coords.emplace_back(inserted.first->first);
   }
+  
+  _indexBuffer.emplace_back(inserted.first->second);
 }
 
 void BatchRenderer::DrawConvexShape(const ConvexShape& shape, Color color) {
@@ -301,7 +300,11 @@ void BatchRenderer::Draw() {
   glDrawArrays(GL_TRIANGLES, 0, 6);  
 }
 
-void BatchRenderer::Clear() { _coords.clear(); _indexBuffer.clear(); }
+void BatchRenderer::Clear() { 
+  _coords.clear(); 
+  _indexBuffer.clear(); 
+  _coordMap.clear(); 
+}
 
 void BatchRenderer::initRenderData() {
   // Note render texture is upside down so we need to flip it

@@ -16,7 +16,7 @@ void Object::Draw(BatchRenderer* _renderer) {
 
   _renderer->DrawSprite(_sprite);
 
-  for (const auto& mask : _mask) {
+  /*for (const auto& mask : _mask) {
     if (mask.GetShape() != nullptr) {
       if (mask.IsCircle) {
         auto s = mask.GetShape();
@@ -32,7 +32,7 @@ void Object::Draw(BatchRenderer* _renderer) {
         _renderer->DrawConvexShape(m, Color(255, 0, 0, 100));
       }
     }
-  }
+  }*/
 }
 
 void Object::SetStatic(const bool& _isStatic) { this->_isStatic = _isStatic; }
